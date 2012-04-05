@@ -3,8 +3,6 @@ package com.android.test;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.android.opengl.BaseGLSurfaceView;
 
@@ -21,14 +19,15 @@ public class BaseOpenGLActivity extends Activity {
         Log.d("Android3DBasicActivity", "onCreate");
 
         context = this;
-        // System.gc();
 
         // 去掉标题
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 设置全屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        // WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         initView();
+        System.gc();
     }
 
     public void initView() {

@@ -7,8 +7,8 @@ import com.android.opengl.BaseGLSurfaceView;
 public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDrawableObject> {
     public int posX;
     public int posY;
-    public int width;
-    public int height;
+    public float width;
+    public float height;
     public boolean initiated = false;
     public boolean active = true;
     public BaseGLSurfaceView myView;
@@ -30,6 +30,12 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
 
     protected abstract void onDraw();
 
+    /**
+     * this function will be run right after the Renderer created. at this time
+     * the renderer is created successfully.
+     * 
+     * @return
+     */
     public final void initDrawable(GL10 gl) {
         if (gl != null) {
             this.gl = gl;
@@ -42,6 +48,19 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
 
     public boolean isInitiated() {
         return initiated;
+    }
+
+    public void setWidth(float pWidth) {
+        this.width = pWidth;
+    }
+
+    public void setHeight(float pWidth) {
+        this.width = pWidth;
+    }
+
+    public void setPos(int pX, int pY) {
+        this.posX = pX;
+        this.posY = pY;
     }
 
     public int compareTo(BaseDrawableObject objB) {

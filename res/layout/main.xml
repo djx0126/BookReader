@@ -5,8 +5,7 @@
     android:layout_height="fill_parent"
     >
     <LinearLayout android:layout_height="fill_parent" android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_width="match_parent" >
-        <com.bookreader.views.main.MainView android:layout_width="match_parent" android:layout_weight="2" android:layout_height="0dp" android:id="@+id/myView1"></com.bookreader.views.main.MainView>
-        <TextView android:layout_width="wrap_content" android:text="TextView1" android:id="@+id/textView1" android:layout_weight="1" android:layout_height="0dp"></TextView>
-        <TextView android:layout_width="wrap_content" android:text="TextView2" android:id="@+id/textView2" android:layout_weight="1" android:layout_height="0dp"></TextView>
+        <com.bookreader.views.main.MainView android:id="@+id/myView1" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="9"></com.bookreader.views.main.MainView>
+        <TextView android:text="TextView1" android:id="@+id/textView1" android:layout_width="match_parent" android:gravity="center" android:layout_weight="1" android:layout_height="0dp"></TextView>
      </LinearLayout>
 </LinearLayout>

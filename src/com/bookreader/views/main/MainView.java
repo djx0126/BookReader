@@ -3,10 +3,11 @@ package com.bookreader.views.main;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.android.object.drawable.BaseDrawableObject;
 import com.android.opengl.BaseGLSurfaceView;
 
 public class MainView extends BaseGLSurfaceView {
-    MainScene myScene = null;
+    BaseDrawableObject myScene = null;
 
     public MainView(Context context) {
         this(context, null);
@@ -18,7 +19,7 @@ public class MainView extends BaseGLSurfaceView {
 
     @Override
     public BaseGLSurfaceView initView() {
-        myScene = new MainScene(this);
+        myScene = new IconObj(this, 100, 100);
         mRenderer.setDrawable(myScene);
         return this;
     }

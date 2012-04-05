@@ -4,6 +4,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 import com.android.opengl.BaseRenderer;
 import com.android.opengl.utils.BaseGLUnit;
@@ -54,6 +55,7 @@ public abstract class BaseTextureHolder {
      *            recycle *
      */
     protected void bindTexture(int texture, Bitmap bitmap, boolean recycleAfterBind) {
+        Log.d("[BaseTextureHolder]", "bindTexture");
         myRenderer.gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
         myRenderer.gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
         myRenderer.gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
@@ -80,6 +82,7 @@ public abstract class BaseTextureHolder {
     }
 
     protected int initTexture(GL10 gl) {
+        Log.d("[BaseTextureHolder]", "initTexture");
         // //IntBuffer intBuffer=IntBuffer.allocate(1);
         // gl.glGenTextures(1, intBuffer);
         // texture = intBuffer.get();
@@ -91,7 +94,6 @@ public abstract class BaseTextureHolder {
 
     public BaseTextureHolder(BaseRenderer pRenderer) {
         this.myRenderer = pRenderer;
-        // initTexBufferShortUnit();
         texture = initTexture(myRenderer.gl);
     }
 
