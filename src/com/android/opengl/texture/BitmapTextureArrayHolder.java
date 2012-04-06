@@ -3,6 +3,8 @@ package com.android.opengl.texture;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -24,11 +26,12 @@ public class BitmapTextureArrayHolder extends BaseTextureHolder {
      * @param length
      *            how many sub pics in all (in all rows)
      */
-    public BitmapTextureArrayHolder(BaseRenderer pRenderer, Context context, int resourceId, int nInRow, int length) {
-        super(pRenderer);
+    public BitmapTextureArrayHolder(GL10 gl, BaseRenderer pRenderer, Context context, int resourceId, int nInRow,
+            int length) {
+        super(gl);
         bitmapList.addAll(BitmapUtils.splitBitmap(BitmapUtils.createFromResource(context, resourceId), nInRow, length));
         for (Bitmap bitmap : bitmapList) {
-            textureHolders.add(new BitmapTextureHolder(pRenderer, bitmap));
+            textureHolders.add(new BitmapTextureHolder(gl, bitmap));
         }
     }
 
@@ -41,9 +44,9 @@ public class BitmapTextureArrayHolder extends BaseTextureHolder {
     }
 
     @Override
-    public void draw() {
+    public void draw(GL10 gl) {
         if (index >= 0 && index < textureHolders.size()) {
-            item(index).draw();
+            item(index).draw(gl);
         }
     }
 }

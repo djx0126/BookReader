@@ -11,40 +11,36 @@ import com.android.opengl.utils.BaseGLUnit;
 
 public abstract class BaseTextureHolder {
     protected static final float Z = BaseRenderer.Z;
-    protected BaseRenderer myRenderer;
+    // protected BaseRenderer myRenderer;
     protected int texture;
     protected BaseGLUnit GLUnit = BaseGLUnit.NORMALSHORT;
 
     /*
      * default draw at (0,0) after loadIdentity and translate and scale
      */
-    public abstract void draw();
+    public abstract void draw(GL10 gl);
 
     /*
      * draw at (posX,posY) by default at (0,0)
      */
-    public void draw(int posX, int posY) {
-        myRenderer.gl.glLoadIdentity();
-        myRenderer.loadIdentity();
-        myRenderer.gl.glTranslatef(posX, posY, Z);
-        draw();
+    public void draw(GL10 gl, int posX, int posY) {
+        gl.glTranslatef(posX, posY, Z);
+        draw(gl);
     }
 
-    public void draw(int posX, int posY, float scale) {
-        draw(posX, posY, scale, scale);
+    public void draw(GL10 gl, int posX, int posY, float scale) {
+        draw(gl, posX, posY, scale, scale);
     }
 
     /*
      * draw at (posX,posY) by default at (0,0), no scale 1,loadIdentify
      * 2,translatef 3,scalef 4,draw
      */
-    public void draw(int posX, int posY, float scaleX, float scaleY) {
-        myRenderer.gl.glLoadIdentity();
-        myRenderer.loadIdentity();
-        myRenderer.gl.glTranslatef(posX, posY, Z);
+    public void draw(GL10 gl, int posX, int posY, float scaleX, float scaleY) {
+        gl.glTranslatef(posX, posY, Z);
 
-        myRenderer.gl.glScalef(scaleX, scaleY, 1.0f);
-        draw();
+        gl.glScalef(scaleX, scaleY, 1.0f);
+        draw(gl);
     }
 
     /**
@@ -54,13 +50,13 @@ public abstract class BaseTextureHolder {
      *            if need to recycle the bitmap after the bind? default is
      *            recycle *
      */
-    protected void bindTexture(int texture, Bitmap bitmap, boolean recycleAfterBind) {
+    protected void bindTexture(GL10 gl, int texture, Bitmap bitmap, boolean recycleAfterBind) {
         Log.d("[BaseTextureHolder]", "bindTexture");
-        myRenderer.gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
-        myRenderer.gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-        myRenderer.gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
-        myRenderer.gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
-        myRenderer.gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
+        gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+        gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+        gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+        gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
         GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
         if (recycleAfterBind) {
             if (bitmap != null) {
@@ -69,16 +65,16 @@ public abstract class BaseTextureHolder {
         }
     }
 
-    protected void bindTexture(int texture, Bitmap bitmap) {
-        bindTexture(texture, bitmap, true);
+    protected void bindTexture(GL10 gl, int texture, Bitmap bitmap) {
+        bindTexture(gl, texture, bitmap, true);
     }
 
-    protected void bindTexture(Bitmap bitmap, boolean recycleAfterBind) {
-        bindTexture(texture, bitmap, recycleAfterBind);
+    protected void bindTexture(GL10 gl, Bitmap bitmap, boolean recycleAfterBind) {
+        bindTexture(gl, texture, bitmap, recycleAfterBind);
     }
 
-    protected void bindTexture(Bitmap bitmap) {
-        bindTexture(texture, bitmap, true);
+    protected void bindTexture(GL10 gl, Bitmap bitmap) {
+        bindTexture(gl, texture, bitmap, true);
     }
 
     protected int initTexture(GL10 gl) {
@@ -92,9 +88,8 @@ public abstract class BaseTextureHolder {
         return texture;
     }
 
-    public BaseTextureHolder(BaseRenderer pRenderer) {
-        this.myRenderer = pRenderer;
-        texture = initTexture(myRenderer.gl);
+    public BaseTextureHolder(GL10 gl) {
+        texture = initTexture(gl);
     }
 
     public BaseTextureHolder setGLUnit(BaseGLUnit GLUnit) {

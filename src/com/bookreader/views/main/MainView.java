@@ -19,7 +19,7 @@ public class MainView extends BaseGLSurfaceView {
 
     @Override
     public BaseGLSurfaceView initView() {
-        myScene = new IconObj(this.mRenderer, 100, 100);
+        myScene = new IconObj(this, 100, 100);
         mRenderer.setDrawable(myScene);
         return this;
     }

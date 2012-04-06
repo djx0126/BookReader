@@ -30,17 +30,18 @@ public class StringTextureHolder extends BaseTextureHolder {
     private int colorG = 255;
     private int colorB = 255;
 
-    public StringTextureHolder(BaseRenderer pRenderer, final String text, final int size) {
-        this(pRenderer, text, size, Typeface.DEFAULT);
+    public StringTextureHolder(GL10 gl, BaseRenderer pRenderer, final String text, final int size) {
+        this(gl, pRenderer, text, size, Typeface.DEFAULT);
     }
 
-    public StringTextureHolder(BaseRenderer pRenderer, final String text, final int size, final Typeface typeface) {
-        this(pRenderer, text, size, Typeface.DEFAULT, 255, 255, 255, 255);
+    public StringTextureHolder(GL10 gl, BaseRenderer pRenderer, final String text, final int size,
+            final Typeface typeface) {
+        this(gl, pRenderer, text, size, Typeface.DEFAULT, 255, 255, 255, 255);
     }
 
-    public StringTextureHolder(BaseRenderer pRenderer, final String text, final int size, final Typeface typeface,
-            final int alpha, final int colorR, final int colorG, final int colorB) {
-        super(pRenderer);
+    public StringTextureHolder(GL10 gl, BaseRenderer pRenderer, final String text, final int size,
+            final Typeface typeface, final int alpha, final int colorR, final int colorG, final int colorB) {
+        super(gl);
         this.text = text;
         this.size = size;
         this.typeface = typeface;
@@ -49,7 +50,7 @@ public class StringTextureHolder extends BaseTextureHolder {
         this.colorG = colorG;
         this.colorB = colorB;
 
-        updateBitmap();
+        updateBitmap(gl);
     }
 
     public StringTextureHolder setText(final String newText) {
@@ -71,7 +72,7 @@ public class StringTextureHolder extends BaseTextureHolder {
         return this;
     }
 
-    public void updateBitmap() {
+    public void updateBitmap(GL10 gl) {
         bitmap = StringBitmapFactory.createBitmap(text, 0, text.length(), size, typeface, colorA, colorR, colorG,
                 colorB);
         bitmapWitdh = bitmap.getWidth();
@@ -82,13 +83,13 @@ public class StringTextureHolder extends BaseTextureHolder {
         scaleH = bitmapHeight;
         scaleW = bitmapWitdh;
 
-        bindTexture(bitmap);
+        bindTexture(gl, bitmap);
 
     }
 
     @Override
-    public void draw() {
-        drawText(myRenderer.gl);
+    public void draw(GL10 gl) {
+        drawText(gl);
     }
 
     public void drawText(GL10 gl) {
@@ -96,7 +97,7 @@ public class StringTextureHolder extends BaseTextureHolder {
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         gl.glScalef(scaleW, scaleH, 1.0f);
         gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
-        BaseGLUnit.NORMALSHORT.drawUnit(myRenderer.gl);
+        BaseGLUnit.NORMALSHORT.drawUnit(gl);
         gl.glDisable(GL10.GL_BLEND);
     }
 

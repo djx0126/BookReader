@@ -1,17 +1,19 @@
 package com.android.opengl;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import com.android.object.drawable.IDrawable;
 
 public abstract class BaseLayer implements Comparable<BaseLayer> {
     protected int priority = 0;
-    protected BaseGLSurfaceView myView;
+    protected BaseGLSurfaceView mView;
 
     public BaseLayer(BaseGLSurfaceView pView) {
-        myView = pView;
+        mView = pView;
 
     }
 
-    public abstract void draw();
+    public abstract void draw(GL10 gl);
 
     public abstract void insertDrawable(IDrawable drawableObj);
 

@@ -2,6 +2,8 @@ package com.android.opengl;
 
 import java.util.PriorityQueue;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import com.android.object.drawable.IDrawable;
 
 public class PriorityLayer extends BaseLayer {
@@ -63,9 +65,9 @@ public class PriorityLayer extends BaseLayer {
     }
 
     @Override
-    public void draw() {
+    public void draw(GL10 gl) {
         for (IDrawable drawable : drawableList) {
-            drawable.draw();
+            drawable.draw(gl);
         }
         updateQueue();
     }

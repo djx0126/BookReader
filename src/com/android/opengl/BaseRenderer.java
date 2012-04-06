@@ -27,7 +27,7 @@ public class BaseRenderer implements GLSurfaceView.Renderer {
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
         if (myDrawable != null) {
-            myDrawable.draw();
+            myDrawable.draw(gl);
         }
         myFPS.tick(TARGETFPS);
     }
