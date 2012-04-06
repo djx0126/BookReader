@@ -2,8 +2,6 @@ package com.android.object.drawable;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import com.android.opengl.texture.BaseTextureHolder;
-
 public interface IDrawable {
 
     // public boolean isInitiated();
@@ -14,5 +12,5 @@ public interface IDrawable {
 
     public void draw(GL10 gl);
 
-    public void putTexture(BaseTextureHolder texture);
+    // public void putTexture(BaseTextureHolder texture);
 }

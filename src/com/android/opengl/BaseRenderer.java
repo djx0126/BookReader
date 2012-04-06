@@ -10,7 +10,7 @@ import com.android.object.drawable.IDrawable;
 import com.android.utils.FPS;
 
 public class BaseRenderer implements GLSurfaceView.Renderer {
-    public BaseGLSurfaceView myView = null;
+    public BaseGLSurfaceView mView = null;
     public GL10 gl;
     public static final float Z = -1f;
     public static final float TARGETFPS = 60f;
@@ -33,7 +33,7 @@ public class BaseRenderer implements GLSurfaceView.Renderer {
     }
 
     public void setGLSurfaceView(BaseGLSurfaceView pView) {
-        myView = pView;
+        mView = pView;
     }
 
     /**
@@ -61,8 +61,8 @@ public class BaseRenderer implements GLSurfaceView.Renderer {
         Log.d("[MyRenderer]", "logic width=" + String.valueOf(logicWidth));
         Log.d("[MyRenderer]", "logic height=" + String.valueOf(logicHeight));
 
-        myView.viewWidth = pWidth;
-        myView.viewHeight = pHeight;
+        mView.viewWidth = pWidth;
+        mView.viewHeight = pHeight;
 
         gl.glViewport(0, 0, logicWidth, logicHeight);
 
@@ -84,9 +84,9 @@ public class BaseRenderer implements GLSurfaceView.Renderer {
 
     protected void AfterSurfaceChanged() {
         // TODO Auto-generated method stub
-        if (myView != null) {
-            myView.viewWidth = logicWidth;
-            myView.viewHeight = logicHeight;
+        if (mView != null) {
+            mView.viewWidth = logicWidth;
+            mView.viewHeight = logicHeight;
         }
     }
 
@@ -118,12 +118,12 @@ public class BaseRenderer implements GLSurfaceView.Renderer {
 
     public BaseRenderer(BaseGLSurfaceView pView) {
         Log.d("[MyRenderer]", "Constructor");
-        myView = pView;
+        mView = pView;
     }
 
     public BaseRenderer(BaseGLSurfaceView pView, int pLogicWidth, int pLogicHeight) {
         Log.d("[MyRenderer]", "Constructor");
-        myView = pView;
+        mView = pView;
         logicWidth = pLogicWidth;
         logicHeight = pLogicHeight;
     }

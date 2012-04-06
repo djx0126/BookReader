@@ -1,10 +1,10 @@
-package com.android.opengl;
+package com.android.object.drawable;
 
 import java.util.PriorityQueue;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import com.android.object.drawable.IDrawable;
+import com.android.opengl.BaseGLSurfaceView;
 
 public class PriorityLayer extends BaseLayer {
     protected PriorityQueue<IDrawable> drawableList;// smaller pri will be out
@@ -70,6 +70,14 @@ public class PriorityLayer extends BaseLayer {
             drawable.draw(gl);
         }
         updateQueue();
+    }
+
+    @Override
+    public void initDrawable(GL10 gl) {
+        for (IDrawable drawable : drawableList) {
+            drawable.initDrawable(gl);
+        }
+        activate();
     }
 
 }

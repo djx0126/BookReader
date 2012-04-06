@@ -1,5 +1,8 @@
 package com.android.opengl;
 
+import com.android.object.drawable.BaseLayer;
+import com.android.object.drawable.PriorityLayer;
+
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
@@ -12,7 +15,7 @@ public class BaseGLSurfaceView extends GLSurfaceView {
     public boolean viewCreated = false;
     public int viewWidth = 0;
     public int viewHeight = 0;
-    private final PriorityLayer drawableLayer = null;
+    private final BaseLayer drawableLayer;
 
     public BaseGLSurfaceView(Context context) {
         this(context, null);
@@ -21,7 +24,7 @@ public class BaseGLSurfaceView extends GLSurfaceView {
     public BaseGLSurfaceView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         this.myContext = context;
-
+        drawableLayer = new PriorityLayer(this);
         setDefaultViewSize();
 
         requestFocus();
