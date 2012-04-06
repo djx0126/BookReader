@@ -12,12 +12,7 @@ public class BaseGLSurfaceView extends GLSurfaceView {
     public boolean viewCreated = false;
     public int viewWidth = 0;
     public int viewHeight = 0;
-
-    // public int leftPad = 50;
-    // public int rightPad = 50;
-    // public int bottomPad = 100;
-    // public int topPad = 50;
-    // public BaseGLSurfaceView nextView;
+    private final PriorityLayer drawableLayer = null;
 
     public BaseGLSurfaceView(Context context) {
         this(context, null);
@@ -35,38 +30,10 @@ public class BaseGLSurfaceView extends GLSurfaceView {
                 + Thread.currentThread().getId());
     }
 
-    /**
-     * To set the logical size of the view
-     * 
-     * @param pWidth
-     *            int the width for the view
-     * @param pHeight
-     *            int the height for the view
-     * 
-     *            this function should be called before the renderer is created,
-     *            which means it should be the 1st thing to do after the view is
-     *            created. if not set manually, default value--screen pixel size
-     *            will be used
-     */
-    // public BaseGLSurfaceView setLogicWidthHeight(int pWidth, int pHeight) {
-    // // setDefaultSize();
-    // if (pWidth > 0) {
-    // logicWidth = pWidth;
-    // }
-    // if (pHeight > 0) {
-    // logicHeight = pHeight;
-    // }
-    //
-    // Log.d("logicWidth", String.valueOf(logicWidth));
-    // Log.d("logicHeight", String.valueOf(logicHeight));
-    // return this;
-    // }
-
     private void setDefaultViewSize() {
         DisplayMetrics dm = this.getResources().getDisplayMetrics();
         viewWidth = dm.widthPixels;
         viewHeight = dm.heightPixels;
-
     }
 
     /**

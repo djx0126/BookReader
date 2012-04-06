@@ -15,6 +15,8 @@ public abstract class BaseLayer implements Comparable<BaseLayer> {
 
     public abstract void insertDrawable(IDrawable drawableObj);
 
+    public abstract void removeDrawable(IDrawable drawableObj);
+
     public abstract void clearDrawable();
 
     public int compareTo(BaseLayer layerB) {

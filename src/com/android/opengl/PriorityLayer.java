@@ -8,17 +8,28 @@ public class PriorityLayer extends BaseLayer {
     protected PriorityQueue<IDrawable> drawableList;// smaller pri will be out
                                                     // first
     protected PriorityQueue<IDrawable> addList;
+    protected PriorityQueue<IDrawable> removeList;
     protected Boolean toClear = false;
 
     public PriorityLayer(BaseGLSurfaceView pView) {
         super(pView);
         drawableList = new PriorityQueue<IDrawable>();
         addList = new PriorityQueue<IDrawable>();
+        removeList = new PriorityQueue<IDrawable>();
     }
 
     @Override
     public void insertDrawable(IDrawable drawableObj) {
-        addList.add(drawableObj);
+        if (!drawableList.contains(drawableObj) && !addList.contains(drawableObj)) {
+            addList.add(drawableObj);
+        }
+    }
+
+    @Override
+    public void removeDrawable(IDrawable drawableObj) {
+        if (drawableList.contains(drawableObj) && !removeList.contains(drawableObj)) {
+            removeList.add(drawableObj);
+        }
     }
 
     @Override
@@ -29,6 +40,12 @@ public class PriorityLayer extends BaseLayer {
     }
 
     protected void updateQueue() {
+        synchronized (removeList) {
+            if (!removeList.isEmpty()) {
+                drawableList.removeAll(removeList);
+                removeList.clear();
+            }
+        }
         synchronized (addList) {
             if (!addList.isEmpty()) {
                 drawableList.addAll(addList);
@@ -36,8 +53,12 @@ public class PriorityLayer extends BaseLayer {
             }
         }
         synchronized (toClear) {
-            drawableList.clear();
-            toClear = false;
+            if (toClear) {
+                drawableList.clear();
+                addList.clear();
+                removeList.clear();
+                toClear = false;
+            }
         }
     }
 
@@ -48,4 +69,5 @@ public class PriorityLayer extends BaseLayer {
         }
         updateQueue();
     }
+
 }
