@@ -8,7 +8,6 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.android.opengl.BaseRenderer;
 import com.android.opengl.utils.BitmapUtils;
 
 public class BitmapTextureArrayHolder extends BaseTextureHolder {
@@ -17,7 +16,6 @@ public class BitmapTextureArrayHolder extends BaseTextureHolder {
     private final List<BitmapTextureHolder> textureHolders = new ArrayList<BitmapTextureHolder>();
 
     /**
-     * @param pRenderer
      * @param context
      * @param resourceId
      *            like R.drawable.icon
@@ -26,8 +24,7 @@ public class BitmapTextureArrayHolder extends BaseTextureHolder {
      * @param length
      *            how many sub pics in all (in all rows)
      */
-    public BitmapTextureArrayHolder(GL10 gl, BaseRenderer pRenderer, Context context, int resourceId, int nInRow,
-            int length) {
+    public BitmapTextureArrayHolder(GL10 gl, Context context, int resourceId, int nInRow, int length) {
         super(gl);
         bitmapList.addAll(BitmapUtils.splitBitmap(BitmapUtils.createFromResource(context, resourceId), nInRow, length));
         for (Bitmap bitmap : bitmapList) {

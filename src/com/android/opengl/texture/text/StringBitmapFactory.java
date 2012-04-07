@@ -11,7 +11,7 @@ import android.graphics.Typeface;
 import com.android.opengl.utils.OpenGLUtils;
 
 public class StringBitmapFactory {
-    private static int charWidth;
+    // private static int charWidth;
     private static int stringWidth;
     private static int stringHeight;
     private static int bitmapWidth;
@@ -25,39 +25,34 @@ public class StringBitmapFactory {
         return createBitmap(s, size, Typeface.DEFAULT, 255, 255, 255, 255);
     }
 
-    public static Bitmap createBitmap(final String s, final int size,
-            final int alpha, final int colorR, final int colorG,
-            final int colorB) {
-        return createBitmap(s, size, Typeface.DEFAULT, alpha, colorR, colorG,
-                colorB);
-    }
-
-    public static Bitmap createBitmap(final String string, final int size,
-            final Typeface typeFace, final int alpha, final int colorR,
+    public static Bitmap createBitmap(final String s, final int size, final int alpha, final int colorR,
             final int colorG, final int colorB) {
-        return createBitmap(string, 0, string.length(), size, typeFace, alpha,
-                colorR, colorG, colorB);
+        return createBitmap(s, size, Typeface.DEFAULT, alpha, colorR, colorG, colorB);
     }
 
-    public static Bitmap createBitmap(final String string, final int start,
-            final int num, final int size, final Typeface typeFace,
-            final int alpha, final int colorR, final int colorG,
-            final int colorB) {
+    public static Bitmap createBitmap(final String string, final int size, final Typeface typeFace, final int alpha,
+            final int colorR, final int colorG, final int colorB) {
+        return createBitmap(string, 0, string.length(), size, typeFace, alpha, colorR, colorG, colorB);
+    }
+
+    public static Bitmap createBitmap(final String string, final int start, final int num, final int size,
+            final Typeface typeFace, final int alpha, final int colorR, final int colorG, final int colorB) {
         paint.setAntiAlias(true);
         paint.setTextSize(size);
         paint.setTypeface(typeFace);
 
         paint.getTextBounds("hygpbdaq", 0, 8, rect);
-        charWidth = rect.width() / 8;
+        // charWidth = rect.width() / 8;
         stringHeight = rect.height();
         bitmapHeight = OpenGLUtils.getNext2N(stringHeight);
 
-        // paint.getTextBounds(string, 0, string.length(), rect);
-        stringWidth = num * charWidth;
+        paint.getTextBounds(string, 0, num, rect);
+
+        // stringWidth = rect.width();
+        stringWidth = (int) Math.ceil(paint.measureText(string.substring(0, num)));
         bitmapWidth = OpenGLUtils.getNext2N(stringWidth);
 
-        Bitmap paintBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight,
-                Config.ARGB_8888);
+        Bitmap paintBitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Config.ARGB_8888);
         canvas.setBitmap(paintBitmap);
         // paint.setColor(Color.CYAN);
         // paint.setColor(Color.TRANSPARENT);
@@ -65,8 +60,7 @@ public class StringBitmapFactory {
 
         paint.setTextAlign(Align.CENTER);
         paint.setARGB(alpha, colorR, colorG, colorB);
-        canvas.drawText(string.substring(start, num), stringWidth / 2,
-                bitmapHeight - paint.descent(), paint);
+        canvas.drawText(string.substring(start, num), stringWidth / 2, bitmapHeight - paint.descent(), paint);
 
         return paintBitmap;
     }

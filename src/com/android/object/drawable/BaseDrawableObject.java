@@ -2,8 +2,6 @@ package com.android.object.drawable;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.util.Log;
-
 import com.android.opengl.BaseGLSurfaceView;
 import com.android.opengl.texture.BaseTextureHolder;
 
@@ -12,7 +10,7 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
     public final static int STATE_ACTIVE = 1;
     private int state = STATE_NOT_ACTIVE;
 
-    private BaseTextureHolder texture = null;
+    protected BaseTextureHolder texture = null;
 
     public int posX;
     public int posY;
@@ -23,24 +21,37 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
 
     public BaseDrawableObject(BaseGLSurfaceView pView) {
         this.mView = pView;
+        this.width = 1.0f;
+        this.height = 1.0f;
     }
 
-    public void setWidth(float pWidth) {
+    public BaseDrawableObject(BaseGLSurfaceView pView, float pWidth, float pHeight) {
+        this.mView = pView;
+        this.width = pWidth;
+        this.height = pHeight;
+    }
+
+    public BaseDrawableObject(BaseGLSurfaceView pView, float pSize) {
+        this.mView = pView;
+        this.width = pSize;
+        this.height = pSize;
+    }
+
+    public final void setWidth(float pWidth) {
         this.width = pWidth;
     }
 
-    public void setHeight(float pWidth) {
+    public final void setHeight(float pWidth) {
         this.width = pWidth;
     }
 
-    public void setPos(int pX, int pY) {
+    public final void setPos(int pX, int pY) {
         this.posX = pX;
         this.posY = pY;
     }
 
     public final void draw(GL10 gl) {
         if (isActived()) {
-            mView.mRenderer.loadIdentity();
             onDraw(gl);
         }
     }
@@ -56,36 +67,35 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
         }
     }
 
-    public void putTexture(BaseTextureHolder texture) {
-        this.texture = texture;
+    public void putTexture(BaseTextureHolder pTexture) {
+        this.texture = pTexture;
     }
 
     /**
-     * this function will be run right after the Renderer created. at this time
-     * the renderer is created successfully.
+     * this function will be run right after the Renderer created. at this time the renderer is created successfully.
      * 
      * @return
      */
     public void initDrawable(GL10 gl) {
-        Log.d("[BaseDrawableObject]", "initDrawable");
+        // Log.d("[BaseDrawableObject]", "initDrawable");
+        activate();
+    }
+
+    public final void activate() {
         state = STATE_ACTIVE;
     }
 
-    public void activate() {
-        state = STATE_ACTIVE;
-    }
-
-    public void deactive() {
+    public final void deactive() {
         if (isActived()) {
             state = STATE_NOT_ACTIVE;
         }
     }
 
-    public boolean isActived() {
+    public final boolean isActived() {
         return state == STATE_ACTIVE;
     }
 
-    public int compareTo(BaseDrawableObject objB) {
+    public final int compareTo(BaseDrawableObject objB) {
         // upper right is smaller than lower left
         if (this.posX > objB.posX && this.posY > objB.posY) {
             return -1;

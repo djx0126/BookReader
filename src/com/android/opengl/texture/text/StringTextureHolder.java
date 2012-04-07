@@ -5,7 +5,6 @@ import javax.microedition.khronos.opengles.GL10;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 
-import com.android.opengl.BaseRenderer;
 import com.android.opengl.texture.BaseTextureHolder;
 import com.android.opengl.utils.BaseGLUnit;
 
@@ -30,19 +29,21 @@ public class StringTextureHolder extends BaseTextureHolder {
     private int colorG = 255;
     private int colorB = 255;
 
-    public StringTextureHolder(GL10 gl, BaseRenderer pRenderer, final String text, final int size) {
-        this(gl, pRenderer, text, size, Typeface.DEFAULT);
+    public StringTextureHolder(GL10 gl, final String text, final int size) {
+        this(gl, text, size, Typeface.DEFAULT);
     }
 
-    public StringTextureHolder(GL10 gl, BaseRenderer pRenderer, final String text, final int size,
-            final Typeface typeface) {
-        this(gl, pRenderer, text, size, Typeface.DEFAULT, 255, 255, 255, 255);
+    public StringTextureHolder(GL10 gl, final String text, final int size, final Typeface typeface) {
+        this(gl, text, size, Typeface.DEFAULT, 255, 255, 255, 255);
     }
 
-    public StringTextureHolder(GL10 gl, BaseRenderer pRenderer, final String text, final int size,
-            final Typeface typeface, final int alpha, final int colorR, final int colorG, final int colorB) {
+    public StringTextureHolder(GL10 gl, final String text, final int size, final Typeface typeface, final int alpha, final int colorR, final int colorG, final int colorB) {
         super(gl);
-        this.text = text;
+        if (text == null || text.length() == 0) {
+            this.text = "";
+        } else {
+            this.text = text;
+        }
         this.size = size;
         this.typeface = typeface;
         this.colorA = alpha;
@@ -73,8 +74,7 @@ public class StringTextureHolder extends BaseTextureHolder {
     }
 
     public void updateBitmap(GL10 gl) {
-        bitmap = StringBitmapFactory.createBitmap(text, 0, text.length(), size, typeface, colorA, colorR, colorG,
-                colorB);
+        bitmap = StringBitmapFactory.createBitmap(text, 0, text.length(), size, typeface, colorA, colorR, colorG, colorB);
         bitmapWitdh = bitmap.getWidth();
         bitmapHeight = bitmap.getHeight();
         // scaleH = bitmapHeight/(float)size;
@@ -92,7 +92,7 @@ public class StringTextureHolder extends BaseTextureHolder {
         drawText(gl);
     }
 
-    public void drawText(GL10 gl) {
+    private void drawText(GL10 gl) {
         gl.glEnable(GL10.GL_BLEND);
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         gl.glScalef(scaleW, scaleH, 1.0f);

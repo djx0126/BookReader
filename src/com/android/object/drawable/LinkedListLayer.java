@@ -1,6 +1,7 @@
 package com.android.object.drawable;
 
-import java.util.PriorityQueue;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -8,18 +9,18 @@ import android.util.Log;
 
 import com.android.opengl.BaseGLSurfaceView;
 
-public class PriorityLayer extends BaseLayer {
-    protected PriorityQueue<IDrawable> drawableList;// smaller pri will be out
-                                                    // first
-    protected PriorityQueue<IDrawable> addList;
-    protected PriorityQueue<IDrawable> removeList;
+public class LinkedListLayer extends BaseLayer {
+    protected List<IDrawable> drawableList;// smaller pri will be out
+                                           // first
+    protected List<IDrawable> addList;
+    protected List<IDrawable> removeList;
     protected Boolean toClear = false;
 
-    public PriorityLayer(BaseGLSurfaceView pView) {
+    public LinkedListLayer(BaseGLSurfaceView pView) {
         super(pView);
-        drawableList = new PriorityQueue<IDrawable>();
-        addList = new PriorityQueue<IDrawable>();
-        removeList = new PriorityQueue<IDrawable>();
+        drawableList = new LinkedList<IDrawable>();
+        addList = new LinkedList<IDrawable>();
+        removeList = new LinkedList<IDrawable>();
     }
 
     @Override

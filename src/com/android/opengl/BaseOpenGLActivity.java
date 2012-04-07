@@ -1,10 +1,9 @@
-package com.android.test;
+package com.android.opengl;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.opengl.BaseGLSurfaceView;
 
 public class BaseOpenGLActivity extends Activity {
     protected BaseGLSurfaceView myGLView;

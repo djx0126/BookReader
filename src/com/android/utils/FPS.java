@@ -50,4 +50,10 @@ public class FPS {
     public float getFPS() {
         return fps;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%.3f", fps);
+    }
+
 }

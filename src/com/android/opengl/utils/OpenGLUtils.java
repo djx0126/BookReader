@@ -6,6 +6,8 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 public class OpenGLUtils {
+    public static int MAXTEXTUREPIXEL = 512;
+
     public static ShortBuffer initBuffer(short shortArray[]) {
         ByteBuffer vbb;
         vbb = ByteBuffer.allocateDirect(shortArray.length * 2);
@@ -28,7 +30,7 @@ public class OpenGLUtils {
 
     public static int getNext2N(int n) {
         int i = 2;
-        while (i < n && i < 256) {
+        while (i < n && i < MAXTEXTUREPIXEL) {
             i <<= 1;
         }
         return i;
