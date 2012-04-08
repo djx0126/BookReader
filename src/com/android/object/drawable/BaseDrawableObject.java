@@ -6,9 +6,10 @@ import com.android.opengl.BaseGLSurfaceView;
 import com.android.opengl.texture.BaseTextureHolder;
 
 public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDrawableObject> {
-    public final static int STATE_NOT_ACTIVE = 0;
-    public final static int STATE_ACTIVE = 1;
-    private int state = STATE_NOT_ACTIVE;
+    public final static int STATE_NOT_INIT = 0;
+    // public final static int STATE_INIT_NOT_ACTIVE = 1;
+    public final static int STATE_ACTIVE = 2;
+    private int state = STATE_NOT_INIT;
 
     protected BaseTextureHolder texture = null;
 
@@ -78,8 +79,11 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
      */
     public void initDrawable(GL10 gl) {
         // Log.d("[BaseDrawableObject]", "initDrawable");
+        doInitDrawable(gl);
         activate();
     }
+
+    protected abstract void doInitDrawable(GL10 gl);
 
     public final void activate() {
         state = STATE_ACTIVE;
@@ -87,7 +91,7 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
 
     public final void deactive() {
         if (isActived()) {
-            state = STATE_NOT_ACTIVE;
+            state = STATE_NOT_INIT;
         }
     }
 

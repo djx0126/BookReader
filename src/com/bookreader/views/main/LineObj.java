@@ -37,7 +37,6 @@ public class LineObj extends BaseDrawableObject {
         while (processed < line.length()) {
             processed += makeSubLine(gl, line, processed);
         }
-        activate();
     }
 
     private int makeSubLine(GL10 gl, String line, int startAt) {
@@ -64,5 +63,10 @@ public class LineObj extends BaseDrawableObject {
             subLinePosX = subLinesPosX.get(idx);
             subline.draw(gl, subLinePosX, posY);
         }
+    }
+
+    @Override
+    protected void doInitDrawable(GL10 gl) {
+
     }
 }

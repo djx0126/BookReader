@@ -75,13 +75,12 @@ public class PriorityLayer extends BaseLayer {
     }
 
     @Override
-    public void initDrawable(GL10 gl) {
-        Log.d("[PriorityLayer]", "initDrawable");
+    protected void doInitDrawable(GL10 gl) {
+        Log.d("[PriorityLayer]", "doInitDrawable");
         updateQueue();
         for (IDrawable drawable : drawableList) {
             drawable.initDrawable(gl);
         }
-        activate();
     }
 
 }

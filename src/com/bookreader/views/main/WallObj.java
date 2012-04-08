@@ -16,8 +16,7 @@ public class WallObj extends BaseDrawableObject {
     }
 
     @Override
-    public void initDrawable(GL10 gl) {
-        super.initDrawable(gl);
+    protected void doInitDrawable(GL10 gl) {
         Log.d("[WallObj]", "initDrawable");
         posX = 50;
         posY = 100;

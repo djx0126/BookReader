@@ -34,14 +34,16 @@ public class PageObj extends BaseDrawableObject {
     }
 
     @Override
-    public void initDrawable(GL10 gl) {
-        Log.d("[PageObj]", "initDrawable");
+    protected void doInitDrawable(GL10 gl) {
+        Log.d("[PageObj]", "doInitDrawable");
         height = mView.viewHeight - padSize * 2;
         width = mView.viewWidth - padSize * 2;
 
         addLines(gl);
 
-        activate();
+        for (LineObj lineObj : linesHolder) {
+            lineObj.initDrawable(gl);
+        }
     }
 
     private void addLines(GL10 gl) {

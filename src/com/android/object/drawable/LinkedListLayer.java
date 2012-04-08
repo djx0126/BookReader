@@ -44,8 +44,13 @@ public class LinkedListLayer extends BaseLayer {
         }
     }
 
-    protected void updateQueue() {
+    protected void updateQueue(GL10 gl) {
         synchronized (removeList) {
+            for (IDrawable drawableObj : drawableList) {
+                if (!drawableObj.isActived() && !removeList.contains(drawableObj)) {
+                    removeList.add(drawableObj);
+                }
+            }
             if (!removeList.isEmpty()) {
                 drawableList.removeAll(removeList);
                 removeList.clear();
@@ -53,7 +58,12 @@ public class LinkedListLayer extends BaseLayer {
         }
         synchronized (addList) {
             if (!addList.isEmpty()) {
-                drawableList.addAll(addList);
+                for (IDrawable drawableObj : addList) {
+                    if (!drawableObj.isActived()) {
+                        drawableObj.initDrawable(gl);
+                    }
+                    drawableList.add(drawableObj);
+                }
                 addList.clear();
             }
         }
@@ -72,17 +82,13 @@ public class LinkedListLayer extends BaseLayer {
         for (IDrawable drawable : drawableList) {
             drawable.draw(gl);
         }
-        updateQueue();
+        updateQueue(gl);
     }
 
     @Override
-    public void initDrawable(GL10 gl) {
-        Log.d("[PriorityLayer]", "initDrawable");
-        updateQueue();
-        for (IDrawable drawable : drawableList) {
-            drawable.initDrawable(gl);
-        }
-        activate();
+    protected void doInitDrawable(GL10 gl) {
+        Log.d("[PriorityLayer]", "doInitDrawable");
+        updateQueue(gl);
     }
 
 }
