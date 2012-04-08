@@ -9,7 +9,7 @@ public class Settings {
     public static int FONTSIZE = 24;
     public static int LINEHEIGHT = 28;
     public static int BUFFERSIZE = 2048;
-    public static int OFFSET = 100;
+    public static int OFFSET = 0;
     public static int NEXTPAGEOFFSET = 100;
     public static int colorA = 255;
     public static int colorR = 0;

@@ -4,8 +4,6 @@ import java.util.PriorityQueue;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.util.Log;
-
 import com.android.opengl.BaseGLSurfaceView;
 
 public class PriorityLayer extends BaseLayer {
@@ -76,7 +74,7 @@ public class PriorityLayer extends BaseLayer {
 
     @Override
     protected void doInitDrawable(GL10 gl) {
-        Log.d("[PriorityLayer]", "doInitDrawable");
+        // Log.d("[PriorityLayer]", "doInitDrawable");
         updateQueue();
         for (IDrawable drawable : drawableList) {
             drawable.initDrawable(gl);

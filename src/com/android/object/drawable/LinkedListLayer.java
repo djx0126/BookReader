@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.util.Log;
-
 import com.android.opengl.BaseGLSurfaceView;
 
 public class LinkedListLayer extends BaseLayer {
@@ -87,7 +85,7 @@ public class LinkedListLayer extends BaseLayer {
 
     @Override
     protected void doInitDrawable(GL10 gl) {
-        Log.d("[PriorityLayer]", "doInitDrawable");
+        // Log.d("[LinkedListLayer]", "doInitDrawable");
         updateQueue(gl);
     }
 

@@ -3,7 +3,7 @@ package com.android.opengl;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-
+import android.view.MotionEvent;
 
 public class BaseOpenGLActivity extends Activity {
     protected BaseGLSurfaceView myGLView;
@@ -67,4 +67,13 @@ public class BaseOpenGLActivity extends Activity {
         // re-allocate objects;
         // myGLView.onResume();
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (myGLView != null) {
+            return myGLView.onTouchEvent(event);
+        }
+        return super.onTouchEvent(event);
+    }
+
 }

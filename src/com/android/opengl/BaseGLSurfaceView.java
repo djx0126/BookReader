@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.android.object.drawable.BaseLayer;
 import com.android.object.drawable.LinkedListLayer;
@@ -86,4 +87,10 @@ public class BaseGLSurfaceView extends GLSurfaceView {
             mRenderer.setClearColor(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
+
 }
