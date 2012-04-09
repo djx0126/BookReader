@@ -4,11 +4,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.android.opengl.BaseGLSurfaceView;
 
-public abstract class BaseLayer implements IDrawable, Comparable<BaseLayer> {
-    public final static int STATE_NOT_INIT = 0;
-    // public final static int STATE_INIT_NOT_ACTIVE = 1;
-    public final static int STATE_ACTIVE = 2;
-    private int state = STATE_NOT_INIT;
+public abstract class BaseLayer extends AbstractDrawable implements Comparable<BaseLayer> {
+    // public final static int STATE_NOT_INIT = 0;
+    // public final static int STATE_ACTIVE = 2;
+    // private int state = STATE_NOT_INIT;
     protected int priority = 0;
     protected BaseGLSurfaceView mView;
 
@@ -17,6 +16,7 @@ public abstract class BaseLayer implements IDrawable, Comparable<BaseLayer> {
 
     }
 
+    @Override
     public abstract void draw(GL10 gl);
 
     public abstract void insertDrawable(IDrawable drawableObj);
@@ -34,21 +34,15 @@ public abstract class BaseLayer implements IDrawable, Comparable<BaseLayer> {
         return 0;
     }
 
-    public void activate() {
-        state = STATE_ACTIVE;
-    }
-
-    public void deactive() {
+    @Override
+    public void deactiveDrawable(GL10 gl) {
         if (isActived()) {
-            state = STATE_NOT_INIT;
+            deactive();
         }
     }
 
-    public boolean isActived() {
-        return state == STATE_ACTIVE;
-    }
-
-    public void initDrawable(GL10 gl) {
+    @Override
+    public void activeDrawable(GL10 gl) {
         // Log.d("[BaseLayer]", "initDrawable");
         doInitDrawable(gl);
         activate();

@@ -1,17 +1,18 @@
 package com.android.object.drawable;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import com.android.opengl.BaseGLSurfaceView;
 import com.android.opengl.texture.BaseTextureHolder;
 
-public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDrawableObject> {
-    public final static int STATE_NOT_INIT = 0;
-    // public final static int STATE_INIT_NOT_ACTIVE = 1;
-    public final static int STATE_ACTIVE = 2;
-    private int state = STATE_NOT_INIT;
+public abstract class BaseDrawableObject extends AbstractDrawable implements Comparable<BaseDrawableObject> {
 
     protected BaseTextureHolder texture = null;
+
+    protected List<BaseDrawableObject> childDrawables;
 
     public int posX;
     public int posY;
@@ -21,21 +22,18 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
     protected BaseGLSurfaceView mView = null;
 
     public BaseDrawableObject(BaseGLSurfaceView pView) {
-        this.mView = pView;
-        this.width = 1.0f;
-        this.height = 1.0f;
+        this(pView, 1.0f, 1.0f);
+    }
+
+    public BaseDrawableObject(BaseGLSurfaceView pView, float pSize) {
+        this(pView, pSize, pSize);
     }
 
     public BaseDrawableObject(BaseGLSurfaceView pView, float pWidth, float pHeight) {
         this.mView = pView;
         this.width = pWidth;
         this.height = pHeight;
-    }
-
-    public BaseDrawableObject(BaseGLSurfaceView pView, float pSize) {
-        this.mView = pView;
-        this.width = pSize;
-        this.height = pSize;
+        childDrawables = new LinkedList<BaseDrawableObject>();
     }
 
     public final void setWidth(float pWidth) {
@@ -51,9 +49,13 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
         this.posY = pY;
     }
 
+    @Override
     public final void draw(GL10 gl) {
         if (isActived()) {
             onDraw(gl);
+            for (BaseDrawableObject childDrawable : childDrawables) {
+                childDrawable.draw(gl);
+            }
         }
     }
 
@@ -77,26 +79,30 @@ public abstract class BaseDrawableObject implements IDrawable, Comparable<BaseDr
      * 
      * @return
      */
-    public void initDrawable(GL10 gl) {
+    @Override
+    public final void activeDrawable(GL10 gl) {
         // Log.d("[BaseDrawableObject]", "initDrawable");
         doInitDrawable(gl);
+        for (BaseDrawableObject childDrawable : childDrawables) {
+            childDrawable.activeDrawable(gl);
+        }
         activate();
     }
 
     protected abstract void doInitDrawable(GL10 gl);
 
-    public final void activate() {
-        state = STATE_ACTIVE;
-    }
-
-    public final void deactive() {
+    @Override
+    public final void deactiveDrawable(GL10 gl) {
         if (isActived()) {
-            state = STATE_NOT_INIT;
+            if (texture != null) {
+                texture.unLoadTexture(gl);
+            }
+            for (BaseDrawableObject childDrawable : childDrawables) {
+                childDrawable.deactiveDrawable(gl);
+            }
+            childDrawables.clear();
         }
-    }
-
-    public final boolean isActived() {
-        return state == STATE_ACTIVE;
+        deactive();
     }
 
     public final int compareTo(BaseDrawableObject objB) {

@@ -46,4 +46,13 @@ public class BitmapTextureArrayHolder extends BaseTextureHolder {
             item(index).draw(gl);
         }
     }
+
+    @Override
+    public void unLoadTexture(GL10 gl) {
+        for (BitmapTextureHolder holder : textureHolders) {
+            holder.unLoadTexture(gl);
+        }
+        super.unLoadTexture(gl);
+    }
+
 }

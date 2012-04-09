@@ -1,7 +1,6 @@
 package com.bookreader.views.main;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -15,7 +14,6 @@ import com.bookreader.config.Settings;
 import com.bookreader.file.FileHelper;
 
 public class PageObj extends BaseDrawableObject {
-    List<LineObj> linesHolder;
     private final int padSize = 10;
     private static Paint paint = new Paint();
 
@@ -23,15 +21,6 @@ public class PageObj extends BaseDrawableObject {
         super(pView, pWidth, pHeight);
         this.posX = padSize;
         this.posY = padSize;
-    }
-
-    @Override
-    protected void onDraw(GL10 gl) {
-
-        for (LineObj lineObj : linesHolder) {
-            lineObj.draw(gl);
-        }
-
     }
 
     @Override
@@ -44,23 +33,20 @@ public class PageObj extends BaseDrawableObject {
         int nextPageOffset = addLines(gl, offset);
         Settings.NEXTPAGEOFFSET = nextPageOffset;
 
-        for (LineObj lineObj : linesHolder) {
-            lineObj.initDrawable(gl);
-        }
     }
 
     private int addLines(GL10 gl, int offset) {
-        linesHolder = new LinkedList<LineObj>();
         List<String> pageLines = new ArrayList<String>();
         int nextPageOffset = getPageStr(offset, pageLines);
         int lineNum = 0;
         for (String lineStr : pageLines) {
             int linePosY = (int) (posY + height - (++lineNum) * Settings.LINEHEIGHT);
-            LineObj aLine = new LineObj(mView, posX, linePosY);
-            aLine.makeLine(gl, lineStr);
-            linesHolder.add(aLine);
+            LineObj aLine = new LineObj(mView, lineStr);
+            aLine.setPos(posX, linePosY);
+            childDrawables.add(aLine);
         }
-
+        pageLines.clear();
+        pageLines = null;
         return nextPageOffset;
     }
 

@@ -13,7 +13,6 @@ import com.android.opengl.utils.BaseGLUnit;
  */
 public class StringTextureHolder extends BaseTextureHolder {
 
-    private Bitmap bitmap;
     private int bitmapWitdh;
     private int bitmapHeight;
 
@@ -74,7 +73,7 @@ public class StringTextureHolder extends BaseTextureHolder {
     }
 
     public void updateBitmap(GL10 gl) {
-        bitmap = StringBitmapFactory.createBitmap(text, 0, text.length(), size, typeface, colorA, colorR, colorG, colorB);
+        Bitmap bitmap = StringBitmapFactory.createBitmap(text, 0, text.length(), size, typeface, colorA, colorR, colorG, colorB);
         bitmapWitdh = bitmap.getWidth();
         bitmapHeight = bitmap.getHeight();
         // scaleH = bitmapHeight/(float)size;
@@ -84,7 +83,10 @@ public class StringTextureHolder extends BaseTextureHolder {
         scaleW = bitmapWitdh;
 
         bindTexture(gl, bitmap);
-
+        if (!bitmap.isRecycled()) {
+            bitmap.recycle();
+        }
+        bitmap = null;
     }
 
     @Override

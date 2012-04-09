@@ -11,6 +11,7 @@ import com.android.opengl.utils.BaseGLUnit;
 public abstract class BaseTextureHolder {
     protected static final float Z = BaseRenderer.Z;
     // protected BaseRenderer myRenderer;
+    protected int texBuffer[];
     protected int texture;
     protected BaseGLUnit GLUnit = BaseGLUnit.NORMALSHORT;
 
@@ -78,10 +79,16 @@ public abstract class BaseTextureHolder {
         // //IntBuffer intBuffer=IntBuffer.allocate(1);
         // gl.glGenTextures(1, intBuffer);
         // texture = intBuffer.get();
-        int texTemp[] = new int[1];
-        gl.glGenTextures(1, texTemp, 0);
-        int texture = texTemp[0];
+        texBuffer = new int[1];
+        gl.glGenTextures(1, texBuffer, 0);
+        int texture = texBuffer[0];
         return texture;
+    }
+
+    public void unLoadTexture(GL10 gl) {
+        if (texBuffer != null) {
+            gl.glDeleteTextures(1, texBuffer, 0);
+        }
     }
 
     public BaseTextureHolder(GL10 gl) {

@@ -8,7 +8,11 @@ public interface IDrawable {
 
     public boolean isActived();
 
-    public void initDrawable(GL10 gl);
+    // public void activate();
+
+    public void deactiveDrawable(GL10 gl);
+
+    public void activeDrawable(GL10 gl);
 
     public void draw(GL10 gl);
 

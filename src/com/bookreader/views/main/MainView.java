@@ -50,8 +50,10 @@ public class MainView extends BaseGLSurfaceView {
             float y = event.getY();
             if (x > 0 && x < viewWidth && y > 0 && y < viewHeight) {
                 Log.d("[MainView]", "x=" + String.valueOf(x) + ", y=" + String.valueOf(y));
-                if (x > viewWidth / 2) {
+                if (x > viewWidth * 2 / 3) {
                     nextPage();
+                } else if (x < viewWidth / 3) {
+                    prePage();
                 }
                 return true;
             }
@@ -61,13 +63,14 @@ public class MainView extends BaseGLSurfaceView {
 
     private void nextPage() {
         layerMgr.removeDrawable(currentPage);
-        BaseDrawableObject nextPage = new PageObj(this, viewWidth, viewHeight);
-        layerMgr.insertDrawable(nextPage);
-        currentPage = nextPage;
+        currentPage = new PageObj(this, viewWidth, viewHeight);
+        layerMgr.insertDrawable(currentPage);
         Settings.OFFSET = Settings.NEXTPAGEOFFSET;
     }
 
     private void prePage() {
-
+        layerMgr.removeDrawable(mFPS);
+        mFPS = new FPSObj(this);
+        layerMgr.insertDrawable(mFPS);
     }
 }

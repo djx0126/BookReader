@@ -79,7 +79,7 @@ public class BaseRenderer implements GLSurfaceView.Renderer {
         gl.glLoadIdentity();
 
         if (!isInitiated && myDrawable != null) {
-            myDrawable.initDrawable(gl);
+            myDrawable.activeDrawable(gl);
             isInitiated = true;
         }
         mView.afterRendererCreated();
