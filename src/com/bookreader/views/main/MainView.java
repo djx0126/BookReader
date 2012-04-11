@@ -28,8 +28,8 @@ public class MainView extends BaseGLSurfaceView {
     public BaseGLSurfaceView initView() {
         Log.d("[MainView]", "initView");
 
-        mFPS = new FPSObj(this);
-        layerMgr.insertDrawable(mFPS);
+        // mFPS = new FPSObj(this);
+        // layerMgr.insertDrawable(mFPS);
 
         currentPage = new PageObj(this, viewWidth, viewHeight);
         layerMgr.insertDrawable(currentPage);
@@ -65,12 +65,16 @@ public class MainView extends BaseGLSurfaceView {
         layerMgr.removeDrawable(currentPage);
         currentPage = new PageObj(this, viewWidth, viewHeight);
         layerMgr.insertDrawable(currentPage);
+        Settings.PREPAGEOFFSET = Settings.OFFSET;
         Settings.OFFSET = Settings.NEXTPAGEOFFSET;
+
     }
 
     private void prePage() {
-        layerMgr.removeDrawable(mFPS);
-        mFPS = new FPSObj(this);
-        layerMgr.insertDrawable(mFPS);
+        layerMgr.removeDrawable(currentPage);
+        Settings.NEXTPAGEOFFSET = Settings.OFFSET;
+        Settings.OFFSET = Settings.PREPAGEOFFSET;
+        currentPage = new PageObj(this, viewWidth, viewHeight);
+        layerMgr.insertDrawable(currentPage);
     }
 }

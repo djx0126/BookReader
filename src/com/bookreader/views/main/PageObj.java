@@ -33,6 +33,8 @@ public class PageObj extends BaseDrawableObject {
         int nextPageOffset = addLines(gl, offset);
         Settings.NEXTPAGEOFFSET = nextPageOffset;
 
+        toSetPrePage(Settings.OFFSET, Settings.NEXTPAGEOFFSET);
+
     }
 
     private int addLines(GL10 gl, int offset) {
@@ -47,9 +49,17 @@ public class PageObj extends BaseDrawableObject {
         }
         pageLines.clear();
         pageLines = null;
+
         return nextPageOffset;
     }
 
+    /**
+     * @param offset
+     *            the offset of this page
+     * @param pageLines
+     *            the buffer to store the page string lines
+     * @return the offset for next page
+     */
     private int getPageStr(int offset, List<String> pageLines) {
 
         char[] buffer = new char[Settings.BUFFERSIZE];
@@ -62,12 +72,24 @@ public class PageObj extends BaseDrawableObject {
         int lineNum = ((int) height) / Settings.LINEHEIGHT;
         int startAt = 0;
 
-        for (int i = 0; i < lineNum; i++) {
-            startAt += getLineStr(src, startAt, pageLines);
+        int lineLength = 0;
+        for (int i = 0; i < lineNum && startAt + lineLength < src.length(); i++) {
+            lineLength = getLineStr(src, startAt, pageLines);
+            startAt += lineLength;
         }
+
         return offset + startAt;
     }
 
+    /**
+     * @param src
+     *            the whole page string source
+     * @param startAt
+     *            start for the line
+     * @param pageLines
+     *            buffer to store the line string
+     * @return number of characters read (count '\n', but not store in the line string since the String texture not support it now)
+     */
     private int getLineStr(final String src, final int startAt, List<String> pageLines) {
         paint.setAntiAlias(true);
         paint.setTextSize(Settings.FONTSIZE);
@@ -89,6 +111,23 @@ public class PageObj extends BaseDrawableObject {
             charsToLine++;
         }
         return charsToLine;
+    }
+
+    private void toSetPrePage(final int offset, final int nextPageOffset) {
+
+        Thread t1 = new Thread(new Runnable() {
+
+            public void run() {
+                int prepageOffset = Settings.PREPAGEOFFSET;
+                List<String> pageLines = new ArrayList<String>();
+                int tryThisPageOffset = getPageStr(prepageOffset, pageLines);
+                if (tryThisPageOffset != offset) {
+                    Settings.PREPAGEOFFSET = Math.max(0, offset - (nextPageOffset - offset));
+                }
+            }
+
+        });
+        t1.start();
     }
 
     // private voi addLines(GL10 gl, int offset) {

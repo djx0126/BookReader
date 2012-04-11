@@ -23,26 +23,56 @@ public class LinkedListLayer extends BaseLayer {
 
     @Override
     public void insertDrawable(IDrawable drawableObj) {
-        if (!drawableList.contains(drawableObj) && !addList.contains(drawableObj)) {
-            addList.add(drawableObj);
+        synchronized (addList) {
+            if (!drawableList.contains(drawableObj) && !addList.contains(drawableObj)) {
+                // addList.add(drawableObj);
+                synchronized (removeList) {
+                    if (removeList.contains(drawableObj)) {
+                        removeList.remove(drawableObj);
+                    } else {
+                        addList.add(drawableObj);
+                    }
+                }
+            }
         }
     }
 
     @Override
     public void removeDrawable(IDrawable drawableObj) {
-        if (drawableList.contains(drawableObj) && !removeList.contains(drawableObj)) {
-            removeList.add(drawableObj);
+        synchronized (addList) {
+            if (addList.contains(drawableObj)) {
+                addList.remove(drawableObj);
+            } else {
+                synchronized (removeList) {
+                    if (drawableList.contains(drawableObj) && !removeList.contains(drawableObj)) {
+                        removeList.add(drawableObj);
+                    }
+                }
+            }
+
         }
     }
 
     @Override
     public void clearDrawable() {
+        synchronized (addList) {
+            addList.clear();
+        }
+        synchronized (removeList) {
+            removeList.clear();
+        }
         synchronized (toClear) {
             toClear = true;
         }
     }
 
     protected void updateQueue(GL10 gl) {
+        synchronized (toClear) {
+            if (toClear) {
+                toClear = false;
+                drawableList.clear();
+            }
+        }
         synchronized (removeList) {
             for (IDrawable drawableObj : drawableList) {
                 if (!drawableObj.isActived() && !removeList.contains(drawableObj)) {
@@ -72,14 +102,7 @@ public class LinkedListLayer extends BaseLayer {
                 addList.clear();
             }
         }
-        synchronized (toClear) {
-            if (toClear) {
-                drawableList.clear();
-                addList.clear();
-                removeList.clear();
-                toClear = false;
-            }
-        }
+
     }
 
     @Override

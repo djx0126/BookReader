@@ -11,6 +11,7 @@ public class Settings {
     public static int BUFFERSIZE = 2048;
     public static int OFFSET = 0;
     public static int NEXTPAGEOFFSET = 100;
+    public static int PREPAGEOFFSET = 100;
     public static int colorA = 255;
     public static int colorR = 0;
     public static int colorG = 0;
