@@ -3,6 +3,8 @@ package com.android.opengl;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 
 public class BaseOpenGLActivity extends Activity {
@@ -74,6 +76,22 @@ public class BaseOpenGLActivity extends Activity {
             return myGLView.onTouchEvent(event);
         }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (myGLView != null) {
+            return myGLView.onCreateOptionsMenu(menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (myGLView != null) {
+            return myGLView.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
 }
