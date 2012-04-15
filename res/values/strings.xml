@@ -2,4 +2,9 @@
 <resources>
     <string name="hello">Hello World, BookReaderActivity!</string>
     <string name="app_name">BookReader</string>
+    <string name="MENU_ADD_FAVOR">加入书签</string>
+    <string name="MENU_FAVOR_LIST">书签列表</string>
+    <string name="MENU_SETTINGS">设置</string>
+    <string name="MENU_FONT_UP">加大字体</string>
+    <string name="MENU_FONT_DOWN">缩小字体</string>
 </resources>
