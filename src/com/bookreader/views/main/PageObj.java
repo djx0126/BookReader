@@ -14,21 +14,15 @@ import com.bookreader.config.Settings;
 import com.bookreader.file.FileHelper;
 
 public class PageObj extends BaseDrawableObject {
-    private final int padSize = 10;
     private static Paint paint = new Paint();
 
     public PageObj(BaseGLSurfaceView pView, float pWidth, float pHeight) {
         super(pView, pWidth, pHeight);
-        this.posX = padSize;
-        this.posY = padSize;
     }
 
     @Override
     protected void doInitDrawable(GL10 gl) {
         Log.d("[PageObj]", "doInitDrawable");
-        height = mView.viewHeight - padSize * 2;
-        width = mView.viewWidth - padSize * 2;
-
         int offset = Settings.OFFSET;
         int nextPageOffset = addLines(gl, offset);
         Settings.NEXTPAGEOFFSET = nextPageOffset;

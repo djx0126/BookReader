@@ -8,21 +8,26 @@ import javax.microedition.khronos.opengles.GL10;
 import com.android.opengl.BaseGLSurfaceView;
 
 public class LinkedListLayer extends BaseLayer {
-    protected List<IDrawable> drawableList;// smaller pri will be out
-                                           // first
-    protected List<IDrawable> addList;
-    protected List<IDrawable> removeList;
+    protected List<BaseDrawableObject> drawableList;// smaller pri will be out
+    // first
+    protected List<BaseDrawableObject> addList;
+    protected List<BaseDrawableObject> removeList;
     protected Boolean toClear = false;
+
+    protected int offsetX = 0;
+    protected int offsetY = 0;
+    protected int offsetXtmp = 0;
+    protected int offsetYtmp = 0;
 
     public LinkedListLayer(BaseGLSurfaceView pView) {
         super(pView);
-        drawableList = new LinkedList<IDrawable>();
-        addList = new LinkedList<IDrawable>();
-        removeList = new LinkedList<IDrawable>();
+        drawableList = new LinkedList<BaseDrawableObject>();
+        addList = new LinkedList<BaseDrawableObject>();
+        removeList = new LinkedList<BaseDrawableObject>();
     }
 
     @Override
-    public void insertDrawable(IDrawable drawableObj) {
+    public void insertDrawable(BaseDrawableObject drawableObj) {
         synchronized (addList) {
             if (!drawableList.contains(drawableObj) && !addList.contains(drawableObj)) {
                 // addList.add(drawableObj);
@@ -38,7 +43,7 @@ public class LinkedListLayer extends BaseLayer {
     }
 
     @Override
-    public void removeDrawable(IDrawable drawableObj) {
+    public void removeDrawable(BaseDrawableObject drawableObj) {
         synchronized (addList) {
             if (addList.contains(drawableObj)) {
                 addList.remove(drawableObj);
@@ -74,7 +79,7 @@ public class LinkedListLayer extends BaseLayer {
             }
         }
         synchronized (removeList) {
-            for (IDrawable drawableObj : drawableList) {
+            for (BaseDrawableObject drawableObj : drawableList) {
                 if (!drawableObj.isActived() && !removeList.contains(drawableObj)) {
                     removeList.add(drawableObj);
                 }
@@ -93,7 +98,7 @@ public class LinkedListLayer extends BaseLayer {
         }
         synchronized (addList) {
             if (!addList.isEmpty()) {
-                for (IDrawable drawableObj : addList) {
+                for (BaseDrawableObject drawableObj : addList) {
                     if (!drawableObj.isActived()) {
                         drawableObj.activeDrawable(gl);
                     }
@@ -107,7 +112,8 @@ public class LinkedListLayer extends BaseLayer {
 
     @Override
     public void draw(GL10 gl) {
-        for (IDrawable drawable : drawableList) {
+        updateOffset();
+        for (BaseDrawableObject drawable : drawableList) {
             drawable.draw(gl);
         }
         updateQueue(gl);
@@ -116,6 +122,22 @@ public class LinkedListLayer extends BaseLayer {
     @Override
     protected void doInitDrawable(GL10 gl) {
         updateQueue(gl);
+    }
+
+    private void updateOffset() {
+        if (offsetX != offsetXtmp || offsetY != offsetYtmp) {
+            offsetX = offsetXtmp;
+            offsetY = offsetYtmp;
+            for (BaseDrawableObject drawable : drawableList) {
+                drawable.setPos(drawable.posX + this.offsetX, drawable.posY + this.offsetY);
+            }
+        }
+
+    }
+
+    public void setOffset(int pOffsetX, int pOffsetY) {
+        offsetXtmp = pOffsetX;
+        offsetYtmp = pOffsetY;
     }
 
 }

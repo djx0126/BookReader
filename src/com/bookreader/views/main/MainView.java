@@ -21,6 +21,8 @@ public class MainView extends BaseGLSurfaceView {
     private static final int MENU_FONT_UP = 4;
     private static final int MENU_FONT_DOWN = 5;
 
+    private final int padSize = 10;
+
     BaseDrawableObject mWall = null;
     BaseDrawableObject mFPS = null;
     BaseDrawableObject currentPage = null;
@@ -38,20 +40,36 @@ public class MainView extends BaseGLSurfaceView {
     @Override
     public BaseGLSurfaceView initView() {
         Log.d("[MainView]", "initView");
+        this.setBkgColor(Settings.bkgColorA, Settings.bkgColorR, Settings.bkgColorG, Settings.bkgColorB);
 
         // mFPS = new FPSObj(this);
         // layerMgr.insertDrawable(mFPS);
-
-        currentPage = new PageObj(this, viewWidth, viewHeight);
-        layerMgr.insertDrawable(currentPage);
-
+        createCurrentPage();
         return this;
     }
 
-    @Override
-    public void afterRendererCreated() {
-        super.afterRendererCreated();
-        this.setBkgColor(Settings.bkgColorA, Settings.bkgColorR, Settings.bkgColorG, Settings.bkgColorB);
+    private void nextPage() {
+        layerMgr.removeDrawable(currentPage);
+
+        createCurrentPage();
+        Settings.PREPAGEOFFSET = Settings.OFFSET;
+        Settings.OFFSET = Settings.NEXTPAGEOFFSET;
+
+    }
+
+    private void prePage() {
+        layerMgr.removeDrawable(currentPage);
+        Settings.NEXTPAGEOFFSET = Settings.OFFSET;
+        Settings.OFFSET = Settings.PREPAGEOFFSET;
+
+        createCurrentPage();
+    }
+
+    private void createCurrentPage() {
+        currentPage = new PageObj(this, viewWidth - 2 * padSize, viewHeight - 2 * padSize);
+        currentPage.setPos(padSize, padSize);
+
+        layerMgr.insertDrawable(currentPage);
     }
 
     @Override
@@ -70,23 +88,6 @@ public class MainView extends BaseGLSurfaceView {
             }
         }
         return super.onTouchEvent(event);
-    }
-
-    private void nextPage() {
-        layerMgr.removeDrawable(currentPage);
-        currentPage = new PageObj(this, viewWidth, viewHeight);
-        layerMgr.insertDrawable(currentPage);
-        Settings.PREPAGEOFFSET = Settings.OFFSET;
-        Settings.OFFSET = Settings.NEXTPAGEOFFSET;
-
-    }
-
-    private void prePage() {
-        layerMgr.removeDrawable(currentPage);
-        Settings.NEXTPAGEOFFSET = Settings.OFFSET;
-        Settings.OFFSET = Settings.PREPAGEOFFSET;
-        currentPage = new PageObj(this, viewWidth, viewHeight);
-        layerMgr.insertDrawable(currentPage);
     }
 
     @Override
@@ -111,6 +112,7 @@ public class MainView extends BaseGLSurfaceView {
         case MENU_ADD_FAVOR:
             break;
         case MENU_FAVOR_LIST:
+            ((BookReaderActivity) mContext).setFavorView();
             break;
         case MENU_SETTINGS:
             // setSetView();
@@ -134,4 +136,5 @@ public class MainView extends BaseGLSurfaceView {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

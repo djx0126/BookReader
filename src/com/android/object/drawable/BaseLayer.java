@@ -19,9 +19,9 @@ public abstract class BaseLayer extends AbstractDrawable implements Comparable<B
     @Override
     public abstract void draw(GL10 gl);
 
-    public abstract void insertDrawable(IDrawable drawableObj);
+    public abstract void insertDrawable(BaseDrawableObject drawableObj);
 
-    public abstract void removeDrawable(IDrawable drawableObj);
+    public abstract void removeDrawable(BaseDrawableObject drawableObj);
 
     public abstract void clearDrawable();
 

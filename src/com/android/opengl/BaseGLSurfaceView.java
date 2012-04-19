@@ -15,7 +15,7 @@ import com.android.object.drawable.LinkedListLayer;
 public class BaseGLSurfaceView extends GLSurfaceView {
     public Context mContext;
     public BaseRenderer mRenderer;
-    public boolean viewCreated = false;
+    private boolean viewInitialized = false;
     public int viewWidth = 0;
     public int viewHeight = 0;
     protected final BaseLayer layerMgr;
@@ -46,7 +46,7 @@ public class BaseGLSurfaceView extends GLSurfaceView {
      * 
      * @return the this view.
      */
-    public BaseGLSurfaceView createDefaultRenderer() {
+    public final BaseGLSurfaceView createDefaultRenderer() {
 
         createRenderer(new BaseRenderer(this));
         return this;
@@ -57,7 +57,7 @@ public class BaseGLSurfaceView extends GLSurfaceView {
         if (mRenderer != null) {
             setRenderer(mRenderer);
         }
-        this.initView();
+        // this.initView();
         mRenderer.setDrawable(layerMgr);
         return this;
 
@@ -80,8 +80,17 @@ public class BaseGLSurfaceView extends GLSurfaceView {
     /**
      * this function will be called automatically when the renderer is changed. in this time, the renderer is successfully created.
      */
-    public void afterRendererCreated() {
+    protected synchronized final void afterRendererCreated() {
+        viewInitialized = true;
+        initView();
+    }
 
+    public synchronized final boolean initialized() {
+        boolean result = false;
+        if (mRenderer != null) {
+            result = viewInitialized;
+        }
+        return result;
     }
 
     public void setBkgColor(int a, int r, int g, int b) {
