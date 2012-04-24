@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 
 import com.bookreader.FavoritesDB.Favor;
 import com.bookreader.config.Settings;
@@ -47,6 +48,10 @@ public class BookHelper {
         closeFavorDB();
     }
 
+    public Cursor getFavorCursor() {
+        return favorDB.getFavoriteCur();
+    }
+
     public List<Favor> getFavorList() {
         List<Favor> favorList = favorDB.getFavoriteList();
         return favorList;
@@ -61,12 +66,13 @@ public class BookHelper {
     }
 
     public void saveFavor(int favorOffset, String favorText, String extraInfo) {
-        Favor favor = favorDB.new Favor(favorOffset);
+        Favor favor = new FavoritesDB.Favor(favorOffset);
         favor.setExtra1(favorText).setExtra2(extraInfo);
         favorDB.saveFavorite(favor);
     }
 
-    public void removeFavor(int favorOffset) {
+    public void removeFavorByOffset(int favorOffset) {
         favorDB.removeFavorite(favorOffset);
     }
+
 }

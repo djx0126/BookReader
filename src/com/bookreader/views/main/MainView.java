@@ -11,6 +11,7 @@ import com.android.object.drawable.BaseDrawableObject;
 import com.android.opengl.BaseGLSurfaceView;
 import com.bookreader.BookReaderActivity;
 import com.bookreader.config.Settings;
+import com.bookreader.file.FileHelper;
 import com.djx.bookreader.R;
 
 public class MainView extends BaseGLSurfaceView {
@@ -110,8 +111,11 @@ public class MainView extends BaseGLSurfaceView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case MENU_ADD_FAVOR:
+            String previewStr = FileHelper.getPreview(mContext, Settings.FILENAME, Settings.OFFSET);
+            ((BookReaderActivity) mContext).bookHelper.saveFavor(Settings.OFFSET, previewStr, "");
             break;
         case MENU_FAVOR_LIST:
+
             ((BookReaderActivity) mContext).setFavorView();
             break;
         case MENU_SETTINGS:
@@ -136,5 +140,4 @@ public class MainView extends BaseGLSurfaceView {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

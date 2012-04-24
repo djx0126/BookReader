@@ -13,6 +13,19 @@ public class FileHelper {
     private FileHelper() {
     }
 
+    public static String getPreview(Context pContext, String assestFileName, int offset) {
+        int BUFFERSIZE = 10;
+        char[] buffer = new char[BUFFERSIZE];
+
+        int charsRead = FileHelper.readFile(pContext, assestFileName, buffer, offset);
+        String src = "";
+        if (charsRead > 0) {
+            src = FileHelper.unicodesToStr(buffer, charsRead);
+        }
+        src.replace("\n", "");
+        return src;
+    }
+
     public static int readFile(Context pContext, String assestFileName, char[] buffer, int offset) {
         int charsRead = -1;
         InputStream is = null;

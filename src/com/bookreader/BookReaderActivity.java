@@ -1,17 +1,29 @@
 package com.bookreader;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.opengl.BaseGLSurfaceView;
 import com.android.opengl.BaseOpenGLActivity;
-import com.bookreader.views.main.ListView;
 import com.djx.bookreader.R;
 
 public class BookReaderActivity extends BaseOpenGLActivity {
     public BookHelper bookHelper = null;
     TextView text1 = null;
+
+    private ListView listView;
+    private Cursor mCursor;
+    private static final int STATUS_MAIN = 0;
+    private static final int STATUS_FAVOR_LIST = 1;
+    private int status = STATUS_MAIN;
 
     @Override
     public void initView() {
@@ -22,11 +34,22 @@ public class BookReaderActivity extends BaseOpenGLActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-
-        }
         // Log.d("[BookReaderActivity]", "other key event");
-        return super.onKeyUp(keyCode, event);
+        if (status == STATUS_FAVOR_LIST) {
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    setMainView();
+                    break;
+                default:
+                    break;
+                }
+            }
+            return true;
+        } else {
+            return super.onKeyUp(keyCode, event);
+        }
+
     }
 
     public void setMainView() {
@@ -36,16 +59,13 @@ public class BookReaderActivity extends BaseOpenGLActivity {
         // myGLView = new MainView(this);
         // myGLView.createDefaultRenderer();
         // setContentView(myGLView);
+
+        status = STATUS_MAIN;
     }
 
     public void setFavorView() {
-        myGLView = new ListView(this);
-        myGLView.createDefaultRenderer();
-        ((ListView) myGLView).addListItem("1. ◊“≥");
-        ((ListView) myGLView).addListItem("2.≤‚ ‘2");
-        ((ListView) myGLView).addListItem("3.≤‚ ‘3");
-        ((ListView) myGLView).addListItem("4.≤‚ ‘4");
-        setContentView(myGLView);
+        changeListView(bookHelper.getFavorCursor());
+        status = STATUS_FAVOR_LIST;
     }
 
     @Override
@@ -66,4 +86,42 @@ public class BookReaderActivity extends BaseOpenGLActivity {
         super.onResume();
 
     }
+
+    private void changeListView(Cursor cur) {
+
+        if (cur != null) {
+            if (mCursor != null) {
+                mCursor.deactivate();
+                mCursor.close();
+            }
+
+            mCursor = cur;
+            this.setContentView(R.layout.favorlist);
+            listView = (ListView) this.findViewById(R.id.listView1);
+
+            String[] from = { FavoritesDB.COL_OFFSET, FavoritesDB.COL_OFFSET };
+            int[] to = { R.id.listItemText1, R.id.listItemText2 };
+
+            ListAdapter adapter = new FavorCursorAdapter(this, R.layout.listitem, mCursor, from, to);
+
+            listView.setAdapter(adapter);
+
+            Log.d("listView getCount", String.valueOf(listView.getTouchables().size()));
+
+            listView.setOnItemClickListener(new OnItemClickListener() {
+
+                public void onItemClick(AdapterView<?> adapter, View itemView, int position, long id) {
+                    Log.d("onItemClick", "position = " + String.valueOf(position));
+                    Log.d("onItemClick", "id = " + String.valueOf(id));
+                    TextView tv1 = (TextView) itemView.findViewById(R.id.listItemText1);
+                    TextView tv2 = (TextView) itemView.findViewById(R.id.listItemText2);
+                    Log.d("onItemClick", "text1 = " + tv1.getText());
+                    Log.d("onItemClick", "text2 = " + tv2.getText());
+
+                }
+            });
+        }
+
+    }
+
 }

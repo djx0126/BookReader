@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent" android:weightSum="1" android:gravity="right">
+        <LinearLayout android:id="@+id/linearLayout2" android:layout_height="match_parent" android:orientation="vertical" android:layout_width="wrap_content" android:layout_weight="1">
+            <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:text="TextView" android:id="@+id/listItemText1" android:layout_height="wrap_content" android:clickable="false"></TextView>
+            <TextView android:text="TextView" android:id="@+id/listItemText2" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+        <ImageButton android:layout_height="wrap_content" android:src="@android:drawable/ic_delete" android:soundEffectsEnabled="true" android:layout_width="wrap_content" android:id="@+id/rmItemBtn1"></ImageButton>
+    </LinearLayout>
+    
+</LinearLayout>

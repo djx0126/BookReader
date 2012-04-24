@@ -14,12 +14,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class FavoritesDB extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "favorites";
-    private static final String COL_OFFSET = "offset";
-    private static final String COL_DATE = "add_date";
-    private static final String COL_EXTRA_INFO_1 = "extra_info_1";
-    private static final String COL_EXTRA_INFO_2 = "extra_info_2";
-    private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COL_OFFSET + " INTEGER, " + COL_DATE + " TIMESTAMP, " + COL_EXTRA_INFO_1
-            + " TEXT, " + COL_EXTRA_INFO_2 + " TEXT);";
+    public static final String COL_ID = "_id";
+    public static final String COL_OFFSET = "offset";
+    public static final String COL_DATE = "add_date";
+    public static final String COL_EXTRA_INFO_1 = "extra_info_1";// to save book text
+    public static final String COL_EXTRA_INFO_2 = "extra_info_2";// to save percentage and reserved
+    public static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_OFFSET + " INTEGER, " + COL_DATE
+            + " TIMESTAMP, " + COL_EXTRA_INFO_1 + " TEXT, " + COL_EXTRA_INFO_2 + " TEXT);";
 
     public FavoritesDB(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -42,6 +43,11 @@ public class FavoritesDB extends SQLiteOpenHelper {
         }
     }
 
+    public Cursor getFavoriteCur() {
+        Cursor cur = this.getReadableDatabase().query(TABLE_NAME, new String[] { COL_ID, COL_OFFSET, COL_DATE, COL_EXTRA_INFO_1, COL_EXTRA_INFO_2 }, null, null, null, null, null);
+        return cur;
+    }
+
     public List<Favor> getFavoriteList() {
         List<Favor> resultList = new LinkedList<Favor>();
         try {
@@ -56,8 +62,8 @@ public class FavoritesDB extends SQLiteOpenHelper {
                     resultList.add(favor);
                     cur.moveToNext();
                 }
-
             }
+            cur.close();
         } catch (Exception e) {
             //
         }
@@ -83,7 +89,7 @@ public class FavoritesDB extends SQLiteOpenHelper {
                 values.put(COL_DATE, pFavor.date);
                 values.put(COL_EXTRA_INFO_1, pFavor.extra1);
                 values.put(COL_EXTRA_INFO_2, pFavor.extra2);
-                this.getWritableDatabase().update(TABLE_NAME, values, "COL_OFFSET=" + String.valueOf(pFavor.offset), null);
+                this.getWritableDatabase().update(TABLE_NAME, values, COL_OFFSET + "==" + String.valueOf(pFavor.offset), null);
             } catch (Exception e) {
 
             }
@@ -96,7 +102,7 @@ public class FavoritesDB extends SQLiteOpenHelper {
 
     public void removeFavorite(int pOffset) {
         try {
-            this.getWritableDatabase().delete(TABLE_NAME, "COL_OFFSET=" + String.valueOf(pOffset), null);
+            this.getWritableDatabase().delete(TABLE_NAME, COL_OFFSET + "==" + String.valueOf(pOffset), null);
         } catch (Exception e) {
 
         }
@@ -109,12 +115,13 @@ public class FavoritesDB extends SQLiteOpenHelper {
     public boolean containFavorite(int pOffset) {
         boolean result = false;
         try {
-            Cursor cur = this.getReadableDatabase().query(TABLE_NAME, null, COL_OFFSET + "=" + String.valueOf(pOffset), null, null, null, null);
+            Cursor cur = this.getReadableDatabase().query(TABLE_NAME, null, COL_OFFSET + "==" + String.valueOf(pOffset), null, null, null, null);
             if (cur != null) {
                 if (cur.getCount() > 0) {
                     result = true;
                 }
             }
+            cur.close();
         } catch (Exception e) {
             //
         }
@@ -122,8 +129,8 @@ public class FavoritesDB extends SQLiteOpenHelper {
         return result;
     }
 
-    public class Favor {
-        public static final String DATE_FORMAT = "YYYY-MM-DD hh:mm:ss";
+    public static class Favor {
+        public static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
         private final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         private int offset = 0;
         private String date = "";
