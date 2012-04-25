@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.bookreader.config.Settings;
 import com.djx.bookreader.R;
 
 public class FavorCursorAdapter extends SimpleCursorAdapter {
@@ -32,6 +33,16 @@ public class FavorCursorAdapter extends SimpleCursorAdapter {
             convertView = inflater.inflate(R.layout.listitem, null);
             holder = new ViewHolder();
             holder.text1 = (TextView) convertView.findViewById(R.id.listItemText1);
+            convertView.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    ViewHolder holder = (ViewHolder) v.getTag();
+                    int offset = holder.offset;
+                    Settings.OFFSET = offset;
+                    ((BookReaderActivity) mContext).setMainView();
+                }
+
+            });
             holder.text2 = (TextView) convertView.findViewById(R.id.listItemText2);
             holder.rmItemBtn = (ImageButton) convertView.findViewById(R.id.rmItemBtn1);
             holder.rmItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +66,7 @@ public class FavorCursorAdapter extends SimpleCursorAdapter {
         holder.id = mCursor.getInt(mCursor.getColumnIndex(FavoritesDB.COL_ID));
         holder.offset = mCursor.getInt(mCursor.getColumnIndex(FavoritesDB.COL_OFFSET));
         holder.text1.setText(mCursor.getString(mCursor.getColumnIndex(FavoritesDB.COL_EXTRA_INFO_1)));
-        holder.text2.setText(mCursor.getString(mCursor.getColumnIndex(FavoritesDB.COL_DATE)) + "  " + mCursor.getString(mCursor.getColumnIndex(FavoritesDB.COL_EXTRA_INFO_2)));
+        holder.text2.setText(mCursor.getString(mCursor.getColumnIndex(FavoritesDB.COL_DATE)) + "   " + mCursor.getString(mCursor.getColumnIndex(FavoritesDB.COL_EXTRA_INFO_2)));
 
         return convertView;
 

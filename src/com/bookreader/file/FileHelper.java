@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.bookreader.config.Settings;
 
@@ -14,7 +15,7 @@ public class FileHelper {
     }
 
     public static String getPreview(Context pContext, String assestFileName, int offset) {
-        int BUFFERSIZE = 10;
+        int BUFFERSIZE = 15;
         char[] buffer = new char[BUFFERSIZE];
 
         int charsRead = FileHelper.readFile(pContext, assestFileName, buffer, offset);
@@ -22,8 +23,13 @@ public class FileHelper {
         if (charsRead > 0) {
             src = FileHelper.unicodesToStr(buffer, charsRead);
         }
-        src.replace("\n", "");
-        return src;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < src.length() - 1; i++) {
+            if (!src.substring(i, i + 1).equals("\n") && !src.substring(i, i + 1).equals("\r")) {
+                sb.append(src.substring(i, i + 1));
+            }
+        }
+        return sb.toString();
     }
 
     public static int readFile(Context pContext, String assestFileName, char[] buffer, int offset) {
@@ -31,8 +37,10 @@ public class FileHelper {
         InputStream is = null;
         try {
             is = pContext.getAssets().open(assestFileName);
+            // Log.d("is avail", String.valueOf(is.available()) + " offset is " + String.valueOf(offset));
             InputStreamReader isr = new InputStreamReader(is, Settings.CODESET);
             isr.skip(offset);
+            // Log.d("is avail after skip", String.valueOf(is.available()));
             charsRead = isr.read(buffer);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,6 +54,32 @@ public class FileHelper {
             }
         }
         return charsRead;
+    }
+
+    public static float getPercentage(Context pContext, String assestFileName, int offset) {
+        float percentage = 0.0f;
+        InputStream is = null;
+        try {
+            is = pContext.getAssets().open(assestFileName);
+            int all = is.available();
+            // Log.d("is avail", String.valueOf(is.available()) + " offset is " + String.valueOf(offset));
+            InputStreamReader isr = new InputStreamReader(is, Settings.CODESET);
+            isr.skip(offset);
+            int now = is.available();
+            percentage = 100 * ((float) (all - now)) / all;
+            Log.d("Percentage after skip", String.format("%.3f", percentage));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return percentage;
     }
 
     public static String unicodesToStr(char[] buffer, int charsToRead) {

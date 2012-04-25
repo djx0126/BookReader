@@ -3,7 +3,6 @@ package com.bookreader.views.main;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.graphics.Typeface;
-import android.util.Log;
 
 import com.android.object.drawable.BaseDrawableObject;
 import com.android.opengl.BaseGLSurfaceView;
@@ -26,8 +25,7 @@ public class FPSObj extends BaseDrawableObject {
 
     @Override
     protected void doInitDrawable(GL10 gl) {
-        // super.initDrawable(gl);
-        Log.d("[FPSObj]", "doInitDrawable");
+        // Log.d("[FPSObj]", "doInitDrawable");
         posX = 0;
         posY = 0;
         StringTextureHolder fpsString = new StringTextureHolder(gl, "9.826", 50, Typeface.DEFAULT, 255, 0, 0, 200);

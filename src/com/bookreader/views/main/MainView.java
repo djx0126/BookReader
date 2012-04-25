@@ -1,6 +1,8 @@
 package com.bookreader.views.main;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
@@ -10,6 +12,7 @@ import android.view.MotionEvent;
 import com.android.object.drawable.BaseDrawableObject;
 import com.android.opengl.BaseGLSurfaceView;
 import com.bookreader.BookReaderActivity;
+import com.bookreader.FavoritesDB;
 import com.bookreader.config.Settings;
 import com.bookreader.file.FileHelper;
 import com.djx.bookreader.R;
@@ -29,6 +32,16 @@ public class MainView extends BaseGLSurfaceView {
     BaseDrawableObject currentPage = null;
     BaseDrawableObject nextPage = null;
     BaseDrawableObject prePage = null;
+
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            FavoritesDB.toastInserResult(mContext, msg.what);
+            super.handleMessage(msg);
+        }
+
+    };
 
     public MainView(Context context) {
         this(context, null);
@@ -111,11 +124,18 @@ public class MainView extends BaseGLSurfaceView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case MENU_ADD_FAVOR:
-            String previewStr = FileHelper.getPreview(mContext, Settings.FILENAME, Settings.OFFSET);
-            ((BookReaderActivity) mContext).bookHelper.saveFavor(Settings.OFFSET, previewStr, "");
+            new Thread(new Runnable() {
+                public void run() {
+                    String previewStr = FileHelper.getPreview(mContext, Settings.FILENAME, Settings.OFFSET);
+                    Message msg = new Message();
+                    String percentage = String.format("%.1f", FileHelper.getPercentage(mContext, Settings.FILENAME, Settings.OFFSET));
+                    msg.what = ((BookReaderActivity) mContext).bookHelper.saveFavor(Settings.OFFSET, previewStr, percentage + "%");
+                    handler.sendMessage(msg);
+                }
+            }).start();
+
             break;
         case MENU_FAVOR_LIST:
-
             ((BookReaderActivity) mContext).setFavorView();
             break;
         case MENU_SETTINGS:

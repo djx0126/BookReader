@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class FavoritesDB extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "favorites";
@@ -21,6 +22,10 @@ public class FavoritesDB extends SQLiteOpenHelper {
     public static final String COL_EXTRA_INFO_2 = "extra_info_2";// to save percentage and reserved
     public static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_OFFSET + " INTEGER, " + COL_DATE
             + " TIMESTAMP, " + COL_EXTRA_INFO_1 + " TEXT, " + COL_EXTRA_INFO_2 + " TEXT);";
+
+    public static final int INSERT_OK = 0;
+    public static final int INSERT_UPDATE = 1;
+    public static final int INSERT_FAIL = -1;
 
     public FavoritesDB(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -44,7 +49,8 @@ public class FavoritesDB extends SQLiteOpenHelper {
     }
 
     public Cursor getFavoriteCur() {
-        Cursor cur = this.getReadableDatabase().query(TABLE_NAME, new String[] { COL_ID, COL_OFFSET, COL_DATE, COL_EXTRA_INFO_1, COL_EXTRA_INFO_2 }, null, null, null, null, null);
+        Cursor cur = this.getReadableDatabase().query(TABLE_NAME, new String[] { COL_ID, COL_OFFSET, COL_DATE, COL_EXTRA_INFO_1, COL_EXTRA_INFO_2 }, null, null, null, null,
+                COL_OFFSET);
         return cur;
     }
 
@@ -70,7 +76,7 @@ public class FavoritesDB extends SQLiteOpenHelper {
         return resultList;
     }
 
-    public void saveFavorite(Favor pFavor) {
+    public int saveFavorite(Favor pFavor) {
         if (!containFavorite(pFavor)) {
             try {
                 ContentValues values = new ContentValues();
@@ -79,6 +85,7 @@ public class FavoritesDB extends SQLiteOpenHelper {
                 values.put(COL_EXTRA_INFO_1, pFavor.extra1);
                 values.put(COL_EXTRA_INFO_2, pFavor.extra2);
                 this.getWritableDatabase().insert(TABLE_NAME, null, values);
+                return INSERT_OK;
             } catch (Exception e) {
 
             }
@@ -90,10 +97,12 @@ public class FavoritesDB extends SQLiteOpenHelper {
                 values.put(COL_EXTRA_INFO_1, pFavor.extra1);
                 values.put(COL_EXTRA_INFO_2, pFavor.extra2);
                 this.getWritableDatabase().update(TABLE_NAME, values, COL_OFFSET + "==" + String.valueOf(pFavor.offset), null);
+                return INSERT_UPDATE;
             } catch (Exception e) {
 
             }
         }
+        return INSERT_FAIL;
     }
 
     public void removeFavorite(Favor pFavor) {
@@ -127,6 +136,20 @@ public class FavoritesDB extends SQLiteOpenHelper {
         }
 
         return result;
+    }
+
+    public static void toastInserResult(Context context, int result) {
+        switch (result) {
+        case INSERT_UPDATE:
+            Toast.makeText(context, "成功更新书签", Toast.LENGTH_SHORT).show();
+            break;
+        case INSERT_FAIL:
+            Toast.makeText(context, "添加书签失败", Toast.LENGTH_SHORT).show();
+            break;
+        default: // INSERT_OK
+            Toast.makeText(context, "成功加入书签", Toast.LENGTH_SHORT).show();
+            break;
+        }
     }
 
     public static class Favor {

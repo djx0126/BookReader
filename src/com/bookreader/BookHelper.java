@@ -65,10 +65,10 @@ public class BookHelper {
         favorDB.close();
     }
 
-    public void saveFavor(int favorOffset, String favorText, String extraInfo) {
+    public int saveFavor(int favorOffset, String favorText, String extraInfo) {
         Favor favor = new FavoritesDB.Favor(favorOffset);
         favor.setExtra1(favorText).setExtra2(extraInfo);
-        favorDB.saveFavorite(favor);
+        return favorDB.saveFavorite(favor);
     }
 
     public void removeFavorByOffset(int favorOffset) {

@@ -5,8 +5,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
     <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical">
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:text="TextView" android:id="@+id/listTitle" android:layout_height="wrap_content"></TextView>
-        <ListView android:layout_height="wrap_content" android:id="@+id/listView1" android:layout_width="match_parent"></ListView>
+        <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:text="收藏列表" android:id="@+id/listTitle" android:layout_height="wrap_content"></TextView>
+        <ListView android:id="@+id/listView1" android:layout_width="match_parent" android:clickable="true" android:layout_height="match_parent"></ListView>
     </LinearLayout>
     
 </LinearLayout>

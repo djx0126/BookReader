@@ -118,12 +118,12 @@ public class PageObj extends BaseDrawableObject {
                 if (tryThisPageOffset != offset) {
                     Settings.PREPAGEOFFSET = Math.max(0, offset - (nextPageOffset - offset));
                 }
+
             }
 
         });
         t1.start();
     }
-
     // private voi addLines(GL10 gl, int offset) {
     // linesHolder = new LinkedList<LineObj>();
     //

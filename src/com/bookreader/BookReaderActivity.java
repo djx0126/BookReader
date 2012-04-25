@@ -7,12 +7,15 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.opengl.BaseGLSurfaceView;
 import com.android.opengl.BaseOpenGLActivity;
+import com.bookreader.FavorCursorAdapter.ViewHolder;
+import com.bookreader.config.Settings;
 import com.djx.bookreader.R;
 
 public class BookReaderActivity extends BaseOpenGLActivity {
@@ -53,6 +56,10 @@ public class BookReaderActivity extends BaseOpenGLActivity {
     }
 
     public void setMainView() {
+        if (mCursor != null) {
+            mCursor.deactivate();
+            mCursor.close();
+        }
         setContentView(R.layout.main);
         myGLView = (BaseGLSurfaceView) this.findViewById(R.id.myView1);
         myGLView.createDefaultRenderer();
@@ -112,11 +119,17 @@ public class BookReaderActivity extends BaseOpenGLActivity {
 
                 public void onItemClick(AdapterView<?> adapter, View itemView, int position, long id) {
                     Log.d("onItemClick", "position = " + String.valueOf(position));
-                    Log.d("onItemClick", "id = " + String.valueOf(id));
-                    TextView tv1 = (TextView) itemView.findViewById(R.id.listItemText1);
-                    TextView tv2 = (TextView) itemView.findViewById(R.id.listItemText2);
-                    Log.d("onItemClick", "text1 = " + tv1.getText());
-                    Log.d("onItemClick", "text2 = " + tv2.getText());
+                    ViewHolder holder;
+                    ImageButton rmItemBtn = (ImageButton) itemView.findViewById(R.id.rmItemBtn1);
+                    holder = (ViewHolder) rmItemBtn.getTag();
+                    Settings.OFFSET = holder.offset;
+                    setMainView();
+                    // Log.d("onItemClick", "position = " + String.valueOf(position));
+                    // Log.d("onItemClick", "id = " + String.valueOf(id));
+                    // TextView tv1 = (TextView) itemView.findViewById(R.id.listItemText1);
+                    // TextView tv2 = (TextView) itemView.findViewById(R.id.listItemText2);
+                    // Log.d("onItemClick", "text1 = " + tv1.getText());
+                    // Log.d("onItemClick", "text2 = " + tv2.getText());
 
                 }
             });
