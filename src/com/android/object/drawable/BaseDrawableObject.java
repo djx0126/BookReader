@@ -6,6 +6,7 @@ import java.util.List;
 import javax.microedition.khronos.opengles.GL10;
 
 import com.android.opengl.BaseGLSurfaceView;
+import com.android.opengl.BaseRenderer;
 import com.android.opengl.texture.BaseTextureHolder;
 
 public abstract class BaseDrawableObject extends AbstractDrawable implements Comparable<BaseDrawableObject> {
@@ -16,8 +17,8 @@ public abstract class BaseDrawableObject extends AbstractDrawable implements Com
 
     public int posX;
     public int posY;
-    public float width;
-    public float height;
+    protected float width;
+    protected float height;
 
     protected BaseGLSurfaceView mView = null;
 
@@ -40,8 +41,16 @@ public abstract class BaseDrawableObject extends AbstractDrawable implements Com
         this.width = pWidth;
     }
 
-    public final void setHeight(float pWidth) {
-        this.width = pWidth;
+    public final void setHeight(float pHeight) {
+        this.height = pHeight;
+    }
+
+    public float getWidth() {
+        return this.width;
+    }
+
+    public float getHeight() {
+        return this.height;
     }
 
     public final void setPos(int pX, int pY) {
@@ -52,9 +61,18 @@ public abstract class BaseDrawableObject extends AbstractDrawable implements Com
     @Override
     public final void draw(GL10 gl) {
         if (isActived()) {
+            BaseRenderer.loadIdentity(gl);
+            drawAsChild(gl);
+        }
+    }
+
+    private final void drawAsChild(GL10 gl) {
+        if (isActived()) {
             onDraw(gl);
             for (BaseDrawableObject childDrawable : childDrawables) {
-                childDrawable.draw(gl);
+                gl.glPushMatrix();
+                childDrawable.drawAsChild(gl);
+                gl.glPopMatrix();
             }
         }
     }
@@ -65,9 +83,11 @@ public abstract class BaseDrawableObject extends AbstractDrawable implements Com
      * @param gl
      */
     protected void onDraw(GL10 gl) {
+        gl.glTranslatef(posX, posY, 0.0f);
         if (texture != null) {
-            texture.draw(gl, posX, posY, width, height);
+            texture.draw(gl, 0, 0, width, height);
         }
+
     }
 
     public void putTexture(BaseTextureHolder pTexture) {

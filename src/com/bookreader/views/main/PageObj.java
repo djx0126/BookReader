@@ -18,6 +18,7 @@ public class PageObj extends BaseDrawableObject {
 
     public PageObj(BaseGLSurfaceView pView, float pWidth, float pHeight) {
         super(pView, pWidth, pHeight);
+
     }
 
     @Override
@@ -38,7 +39,7 @@ public class PageObj extends BaseDrawableObject {
         for (String lineStr : pageLines) {
             int linePosY = (int) (posY + height - (++lineNum) * Settings.LINEHEIGHT);
             LineObj aLine = new LineObj(mView, lineStr);
-            aLine.setPos(posX, linePosY);
+            aLine.setPos(0, linePosY);
             childDrawables.add(aLine);
         }
         pageLines.clear();

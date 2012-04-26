@@ -20,7 +20,7 @@ public class FPSObj extends BaseDrawableObject {
     protected void onDraw(GL10 gl) {
         fps.tick();
         ((StringTextureHolder) texture).setText(fps.toString()).updateBitmap(gl);
-        texture.draw(gl, posX, posY, width, height);
+        super.onDraw(gl);
     }
 
     @Override

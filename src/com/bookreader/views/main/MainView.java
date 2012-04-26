@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import com.android.object.drawable.BaseDrawableObject;
+import com.android.object.drawable.StaticTextObj;
 import com.android.opengl.BaseGLSurfaceView;
 import com.bookreader.BookReaderActivity;
 import com.bookreader.FavoritesDB;
@@ -25,10 +26,14 @@ public class MainView extends BaseGLSurfaceView {
     private static final int MENU_FONT_UP = 4;
     private static final int MENU_FONT_DOWN = 5;
 
-    private final int padSize = 10;
+    private final int padLeft = 10;
+    private final int padTop = 10;
+    private final int padButtom = 10;
 
-    BaseDrawableObject mWall = null;
     BaseDrawableObject mFPS = null;
+    BaseDrawableObject bookName = null;
+    BaseDrawableObject nowTime = null;
+    BaseDrawableObject percentage = null;
     BaseDrawableObject currentPage = null;
     BaseDrawableObject nextPage = null;
     BaseDrawableObject prePage = null;
@@ -56,8 +61,21 @@ public class MainView extends BaseGLSurfaceView {
         Log.d("[MainView]", "initView");
         this.setBkgColor(Settings.bkgColorA, Settings.bkgColorR, Settings.bkgColorG, Settings.bkgColorB);
 
-        // mFPS = new FPSObj(this);
-        // layerMgr.insertDrawable(mFPS);
+        mFPS = new FPSObj(this);
+        layerMgr.insertDrawable(mFPS);
+
+        bookName = new StaticTextObj(this, mContext.getResources().getString(R.string.BOOK_NAME), Settings.FONTSIZE * 3 / 4);
+        bookName.setPos((int) ((this.viewWidth - bookName.getWidth()) / 2), 0);
+        layerMgr.insertDrawable(bookName);
+
+        nowTime = new TimeObj(this, Settings.FONTSIZE * 3 / 4);
+        nowTime.setPos(padLeft, 0);
+        layerMgr.insertDrawable(nowTime);
+
+        percentage = new StaticTextObj(this, String.format("%.1f", FileHelper.getPercentage(mContext, Settings.FILENAME, Settings.OFFSET)) + "%", Settings.FONTSIZE * 3 / 4);
+        percentage.setPos((int) (this.viewWidth - padLeft - percentage.getWidth()), 0);
+        layerMgr.insertDrawable(percentage);
+
         createCurrentPage();
         return this;
     }
@@ -80,10 +98,12 @@ public class MainView extends BaseGLSurfaceView {
     }
 
     private void createCurrentPage() {
-        currentPage = new PageObj(this, viewWidth - 2 * padSize, viewHeight - 2 * padSize);
-        currentPage.setPos(padSize, padSize);
-
+        currentPage = new PageObj(this, viewWidth - 2 * padLeft, viewHeight - 2 * (padTop + padButtom));
+        currentPage.setPos(padLeft, padButtom);
         layerMgr.insertDrawable(currentPage);
+
+        ((StaticTextObj) percentage).setText(String.format("%.1f", FileHelper.getPercentage(mContext, Settings.FILENAME, Settings.OFFSET)) + "%");
+        percentage.setPos((int) (this.viewWidth - padLeft - percentage.getWidth()), 0);
     }
 
     @Override

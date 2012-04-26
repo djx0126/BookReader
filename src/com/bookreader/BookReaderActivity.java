@@ -124,12 +124,6 @@ public class BookReaderActivity extends BaseOpenGLActivity {
                     holder = (ViewHolder) rmItemBtn.getTag();
                     Settings.OFFSET = holder.offset;
                     setMainView();
-                    // Log.d("onItemClick", "position = " + String.valueOf(position));
-                    // Log.d("onItemClick", "id = " + String.valueOf(id));
-                    // TextView tv1 = (TextView) itemView.findViewById(R.id.listItemText1);
-                    // TextView tv2 = (TextView) itemView.findViewById(R.id.listItemText2);
-                    // Log.d("onItemClick", "text1 = " + tv1.getText());
-                    // Log.d("onItemClick", "text2 = " + tv2.getText());
 
                 }
             });

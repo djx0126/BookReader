@@ -7,4 +7,5 @@
     <string name="MENU_SETTINGS">设置</string>
     <string name="MENU_FONT_UP">加大字体</string>
     <string name="MENU_FONT_DOWN">缩小字体</string>
+    <string name="BOOK_NAME">大漠谣</string>
 </resources>

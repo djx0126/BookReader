@@ -25,6 +25,7 @@ public class LineObj extends BaseDrawableObject {
         // Log.d("[LineObj]", "linewidth=" + String.valueOf(paint.measureText(line)));
         int processed = 0;
         while (processed < line.length()) {
+
             processed += makeSubLine(gl, line, processed);
         }
     }
@@ -39,9 +40,9 @@ public class LineObj extends BaseDrawableObject {
         }
         String subLineStr = line.substring(startAt, startAt + processed);
 
-        int subLineX = (int) (posX + paint.measureText(line.substring(0, startAt)));
+        int subLineX = (int) (0 + paint.measureText(line.substring(0, startAt)));
         StaticTextObj subLine = new StaticTextObj(mView, subLineStr, Settings.FONTSIZE, Settings.typeFace, Settings.colorA, Settings.colorR, Settings.colorG, Settings.colorB);
-        subLine.setPos(subLineX, posY);
+        subLine.setPos(subLineX, 0);
         childDrawables.add(subLine);
         return processed;
     }

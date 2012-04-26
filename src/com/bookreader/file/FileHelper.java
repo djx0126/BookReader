@@ -1,11 +1,11 @@
 package com.bookreader.file;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.bookreader.config.Settings;
 
@@ -41,7 +41,8 @@ public class FileHelper {
             InputStreamReader isr = new InputStreamReader(is, Settings.CODESET);
             isr.skip(offset);
             // Log.d("is avail after skip", String.valueOf(is.available()));
-            charsRead = isr.read(buffer);
+            BufferedReader br = new BufferedReader(isr);
+            charsRead = br.read(buffer);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -67,7 +68,7 @@ public class FileHelper {
             isr.skip(offset);
             int now = is.available();
             percentage = 100 * ((float) (all - now)) / all;
-            Log.d("Percentage after skip", String.format("%.3f", percentage));
+            // Log.d("Percentage after skip", String.format("%.3f", percentage));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -38,7 +38,6 @@ public abstract class BaseTextureHolder {
         gl.glTranslatef(posX, posY, Z);
         gl.glScalef(scaleX, scaleY, 1.0f);
         draw(gl);
-        BaseRenderer.loadIdentity(gl);
     }
 
     /**

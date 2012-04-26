@@ -20,8 +20,8 @@ public class StringTextureHolder extends BaseTextureHolder {
     private int size = 10;
     private Typeface typeface = Typeface.DEFAULT;
 
-    private float scaleH = 1.0f;
-    private float scaleW = 1.0f;
+    public float scaleH = 1.0f;
+    public float scaleW = 1.0f;
 
     private int colorA = 255;
     private int colorR = 255;
@@ -81,7 +81,6 @@ public class StringTextureHolder extends BaseTextureHolder {
         // scaleH*bitmapWitdh/bitmapHeight;
         scaleH = bitmapHeight;
         scaleW = bitmapWitdh;
-
         bindTexture(gl, bitmap);
         if (!bitmap.isRecycled()) {
             bitmap.recycle();
