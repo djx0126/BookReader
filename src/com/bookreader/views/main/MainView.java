@@ -30,7 +30,11 @@ public class MainView extends BaseGLSurfaceView {
     private final int padTop = 10;
     private final int padButtom = 10;
 
-    BaseDrawableObject mFPS = null;
+    private float touchStartX = 0.0f;
+    private float touchStartY = 0.0f;
+    private boolean touchMovedFlag = false;
+
+    // BaseDrawableObject mFPS = null;
     BaseDrawableObject bookName = null;
     BaseDrawableObject nowTime = null;
     BaseDrawableObject percentage = null;
@@ -61,8 +65,8 @@ public class MainView extends BaseGLSurfaceView {
         Log.d("[MainView]", "initView");
         this.setBkgColor(Settings.bkgColorA, Settings.bkgColorR, Settings.bkgColorG, Settings.bkgColorB);
 
-        mFPS = new FPSObj(this);
-        layerMgr.insertDrawable(mFPS);
+        // mFPS = new FPSObj(this);
+        // layerMgr.insertDrawable(mFPS);
 
         bookName = new StaticTextObj(this, mContext.getResources().getString(R.string.BOOK_NAME), Settings.FONTSIZE * 3 / 4);
         bookName.setPos((int) ((this.viewWidth - bookName.getWidth()) / 2), 0);
@@ -108,19 +112,36 @@ public class MainView extends BaseGLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            float x = event.getX();
-            float y = event.getY();
-            if (x > 0 && x < viewWidth && y > 0 && y < viewHeight) {
-                Log.d("[MainView]", "x=" + String.valueOf(x) + ", y=" + String.valueOf(y));
-                if (x > viewWidth * 2 / 3) {
-                    nextPage();
-                } else if (x < viewWidth / 3) {
-                    prePage();
+        float x = event.getX();
+        float y = event.getY();
+        if (x > 0 && x < viewWidth && y > 0 && y < viewHeight) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                // Log.d("MotionEvent.ACTION_DOWN", "posX=" + String.valueOf(x) + " posY=" + String.valueOf(y));
+                touchStartX = x;
+                touchStartY = y;
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                // Log.d("MotionEvent.ACTION_UP", "posX=" + String.valueOf(x) + " posY=" + String.valueOf(y));
+                if (touchMovedFlag) {
+                    touchMovedFlag = false;
+                    if (x > viewWidth * 3 / 5 && touchStartX < viewWidth * 2 / 5) {
+                        prePage();
+                    } else if (x < viewWidth * 2 / 3 && touchStartX > viewWidth * 3 / 5) {
+                        nextPage();
+                    }
+                } else {
+                    if (x > viewWidth * 2 / 3) {
+                        nextPage();
+                    } else if (x < viewWidth / 3) {
+                        prePage();
+                    }
                 }
-                return true;
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                // Log.d("MotionEvent.ACTION_MOVE", "posX=" + String.valueOf(x) + " posY=" + String.valueOf(y));
+                touchMovedFlag = true;
             }
+            return true;
         }
+
         return super.onTouchEvent(event);
     }
 

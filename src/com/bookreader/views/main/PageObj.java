@@ -6,7 +6,6 @@ import java.util.List;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.graphics.Paint;
-import android.util.Log;
 
 import com.android.object.drawable.BaseDrawableObject;
 import com.android.opengl.BaseGLSurfaceView;
@@ -23,7 +22,7 @@ public class PageObj extends BaseDrawableObject {
 
     @Override
     protected void doInitDrawable(GL10 gl) {
-        Log.d("[PageObj]", "doInitDrawable");
+        // Log.d("[PageObj]", "doInitDrawable");
         int offset = Settings.OFFSET;
         int nextPageOffset = addLines(gl, offset);
         Settings.NEXTPAGEOFFSET = nextPageOffset;

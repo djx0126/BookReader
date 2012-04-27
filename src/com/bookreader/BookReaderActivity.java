@@ -29,13 +29,6 @@ public class BookReaderActivity extends BaseOpenGLActivity {
     private int status = STATUS_MAIN;
 
     @Override
-    public void initView() {
-
-        setMainView();
-
-    }
-
-    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         // Log.d("[BookReaderActivity]", "other key event");
         if (status == STATUS_FAVOR_LIST) {
@@ -89,9 +82,18 @@ public class BookReaderActivity extends BaseOpenGLActivity {
 
     @Override
     protected void onResume() {
-        bookHelper.loadCurrentPage();
         super.onResume();
-
+        bookHelper.loadCurrentPage();
+        switch (status) {
+        case STATUS_MAIN:
+            setMainView();
+            break;
+        case STATUS_FAVOR_LIST:
+            setFavorView();
+            break;
+        default:
+            break;
+        }
     }
 
     private void changeListView(Cursor cur) {
