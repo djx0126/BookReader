@@ -4,7 +4,6 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -32,7 +31,7 @@ public class BaseGLSurfaceView extends GLSurfaceView {
 
         requestFocus();
         setFocusableInTouchMode(true);
-        Log.d("BaseGLSurfaceView", "created:" + Thread.currentThread().toString() + "/" + Thread.currentThread().getId());
+        // Log.d("BaseGLSurfaceView", "created:" + Thread.currentThread().toString() + "/" + Thread.currentThread().getId());
     }
 
     private void setDefaultViewSize() {
@@ -73,7 +72,7 @@ public class BaseGLSurfaceView extends GLSurfaceView {
      * @return
      */
     protected BaseGLSurfaceView initView() {
-        Log.d("BaseGLSurfaceView", "initView");
+        // Log.d("BaseGLSurfaceView", "initView");
         return this;
     }
 

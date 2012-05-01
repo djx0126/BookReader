@@ -31,7 +31,7 @@ public class BookHelper {
         Settings.OFFSET = settings.getInt(OFFSET_TAG, 0);
         Settings.NEXTPAGEOFFSET = settings.getInt(NEXT_OFFSET_TAG, 0);
         Settings.PREPAGEOFFSET = settings.getInt(PRE_OFFSET_TAG, 0);
-        Settings.FONTSIZE = settings.getInt(FONTSIZE_TAG, 0);
+        Settings.FONTSIZE = settings.getInt(FONTSIZE_TAG, Settings.DEFAULTFONTSIZE);
 
         initFavorDB();
 

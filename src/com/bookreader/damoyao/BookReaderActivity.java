@@ -53,7 +53,7 @@ public class BookReaderActivity extends BaseOpenGLActivity {
     }
 
     public void setMainView() {
-        Log.d("[BookReaderActivity]", "setMainView");
+        // Log.d("[BookReaderActivity]", "setMainView");
         if (mCursor != null) {
             mCursor.deactivate();
             mCursor.close();
@@ -127,7 +127,7 @@ public class BookReaderActivity extends BaseOpenGLActivity {
 
             listView.setAdapter(adapter);
 
-            Log.d("listView getCount", String.valueOf(listView.getTouchables().size()));
+            // Log.d("listView getCount", String.valueOf(listView.getTouchables().size()));
 
             listView.setOnItemClickListener(new OnItemClickListener() {
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -62,7 +61,7 @@ public class MainView extends BaseGLSurfaceView {
 
     @Override
     public BaseGLSurfaceView initView() {
-        Log.d("[MainView]", "initView");
+        // Log.d("[MainView]", "initView");
         layerMgr.clearDrawable();
         this.setBkgColor(Settings.bkgColorA, Settings.bkgColorR, Settings.bkgColorG, Settings.bkgColorB);
 

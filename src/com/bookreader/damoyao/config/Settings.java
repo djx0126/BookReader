@@ -10,6 +10,7 @@ public class Settings {
     public static final int FONTSIZEMAX = 60;
     public static final int FONTSIZEMIN = 12;
     public static final int FONTSIZESTEP = 4;
+    public static final int DEFAULTFONTSIZE = 28;
     public static int FONTSIZE = 28;
     public static int LINEHEIGHT = (int) (FONTSIZE * 1.2);
     public static int BUFFERSIZE = 1024;

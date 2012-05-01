@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, BookReaderActivity!</string>
-    <string name="app_name">BookReader</string>
+    <string name="app_name">大漠谣</string>
     <string name="MENU_ADD_FAVOR">加入书签</string>
     <string name="MENU_FAVOR_LIST">书签列表</string>
     <string name="MENU_SETTINGS">设置</string>
