@@ -1,4 +1,4 @@
-package com.bookreader.views.main;
+package com.bookreader.damoyao.views.main;
 
 import javax.microedition.khronos.opengles.GL10;
 

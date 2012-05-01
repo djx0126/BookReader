@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLUtils;
 
 import com.android.opengl.BaseRenderer;
+import com.android.opengl.texture.TextureCache.TextreCahceItem;
 import com.android.opengl.utils.BaseGLUnit;
 
 public abstract class BaseTextureHolder {
@@ -13,6 +14,7 @@ public abstract class BaseTextureHolder {
     // protected BaseRenderer myRenderer;
     protected int texBuffer[];
     protected int texture;
+    protected TextreCahceItem textureItem;
     protected BaseGLUnit GLUnit = BaseGLUnit.NORMALSHORT;
 
     /*
@@ -75,18 +77,22 @@ public abstract class BaseTextureHolder {
 
     protected int initTexture(GL10 gl) {
         // Log.d("[BaseTextureHolder]", "initTexture");
-        // //IntBuffer intBuffer=IntBuffer.allocate(1);
+        // IntBuffer intBuffer = IntBuffer.allocate(1);
         // gl.glGenTextures(1, intBuffer);
         // texture = intBuffer.get();
-        texBuffer = new int[1];
-        gl.glGenTextures(1, texBuffer, 0);
-        int texture = texBuffer[0];
+        TextreCahceItem textureItem = TextureCache.getTexture(gl);
+        texture = textureItem.getTexture();
+
+        // texBuffer = new int[1];
+        // gl.glGenTextures(1, texBuffer, 0);
+        // int texture = texBuffer[0];
         return texture;
     }
 
     public void unLoadTexture(GL10 gl) {
         if (texBuffer != null) {
-            gl.glDeleteTextures(1, texBuffer, 0);
+            // gl.glDeleteTextures(1, texBuffer, 0);
+            TextureCache.returnTexture(textureItem.getKey());
         }
     }
 

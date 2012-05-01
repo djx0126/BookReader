@@ -1,4 +1,4 @@
-package com.bookreader.views.main;
+package com.bookreader.damoyao.views.main;
 
 import android.content.Context;
 import android.os.Handler;
@@ -12,10 +12,10 @@ import android.view.MotionEvent;
 import com.android.object.drawable.BaseDrawableObject;
 import com.android.object.drawable.StaticTextObj;
 import com.android.opengl.BaseGLSurfaceView;
-import com.bookreader.BookReaderActivity;
-import com.bookreader.FavoritesDB;
-import com.bookreader.config.Settings;
-import com.bookreader.file.FileHelper;
+import com.bookreader.damoyao.BookReaderActivity;
+import com.bookreader.damoyao.FavoritesDB;
+import com.bookreader.damoyao.config.Settings;
+import com.bookreader.damoyao.file.FileHelper;
 import com.djx.bookreader.R;
 
 public class MainView extends BaseGLSurfaceView {
@@ -63,33 +63,31 @@ public class MainView extends BaseGLSurfaceView {
     @Override
     public BaseGLSurfaceView initView() {
         Log.d("[MainView]", "initView");
+        layerMgr.clearDrawable();
         this.setBkgColor(Settings.bkgColorA, Settings.bkgColorR, Settings.bkgColorG, Settings.bkgColorB);
 
-        // mFPS = new FPSObj(this);
-        // layerMgr.insertDrawable(mFPS);
-
         bookName = new StaticTextObj(this, mContext.getResources().getString(R.string.BOOK_NAME), Settings.FONTSIZE * 3 / 4);
-        bookName.setPos((int) ((this.viewWidth - bookName.getWidth()) / 2), 0);
+        bookName.setPos((int) ((this.viewWidth - bookName.getWidth()) / 2), 1);
         layerMgr.insertDrawable(bookName);
 
         nowTime = new TimeObj(this, Settings.FONTSIZE * 3 / 4);
-        nowTime.setPos(padLeft, 0);
+        nowTime.setPos(padLeft, 1);
         layerMgr.insertDrawable(nowTime);
 
         percentage = new StaticTextObj(this, String.format("%.1f", FileHelper.getPercentage(mContext, Settings.FILENAME, Settings.OFFSET)) + "%", Settings.FONTSIZE * 3 / 4);
-        percentage.setPos((int) (this.viewWidth - padLeft - percentage.getWidth()), 0);
+        percentage.setPos((int) (this.viewWidth - padLeft - percentage.getWidth()), 1);
         layerMgr.insertDrawable(percentage);
 
         createCurrentPage();
+
         return this;
     }
 
     private void nextPage() {
         layerMgr.removeDrawable(currentPage);
-
-        createCurrentPage();
         Settings.PREPAGEOFFSET = Settings.OFFSET;
         Settings.OFFSET = Settings.NEXTPAGEOFFSET;
+        createCurrentPage();
 
     }
 
@@ -102,12 +100,13 @@ public class MainView extends BaseGLSurfaceView {
     }
 
     private void createCurrentPage() {
-        currentPage = new PageObj(this, viewWidth - 2 * padLeft, viewHeight - 2 * (padTop + padButtom));
+        currentPage = new PageObj(this, viewWidth - 2 * padLeft, viewHeight - 2 * (padTop + padButtom), Settings.OFFSET);
         currentPage.setPos(padLeft, padButtom);
-        layerMgr.insertDrawable(currentPage);
 
+        layerMgr.insertDrawable(currentPage);
         ((StaticTextObj) percentage).setText(String.format("%.1f", FileHelper.getPercentage(mContext, Settings.FILENAME, Settings.OFFSET)) + "%");
-        percentage.setPos((int) (this.viewWidth - padLeft - percentage.getWidth()), 0);
+        percentage.setPos((int) (this.viewWidth - padLeft - percentage.getWidth()), 1);
+
     }
 
     @Override

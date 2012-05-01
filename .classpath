@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="lib" path="F:/documents/androidBook/youmi-android-sdk-v3.05_2011-12-30/lib/youmi-android_v3.05_2011-12-30.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

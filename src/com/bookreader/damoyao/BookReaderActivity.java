@@ -1,5 +1,7 @@
-package com.bookreader;
+package com.bookreader.damoyao;
 
+import net.youmi.android.AdManager;
+import net.youmi.android.AdView;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,22 +10,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.opengl.BaseGLSurfaceView;
 import com.android.opengl.BaseOpenGLActivity;
-import com.bookreader.FavorCursorAdapter.ViewHolder;
-import com.bookreader.config.Settings;
+import com.bookreader.damoyao.FavorCursorAdapter.ViewHolder;
+import com.bookreader.damoyao.config.Settings;
 import com.djx.bookreader.R;
 
 public class BookReaderActivity extends BaseOpenGLActivity {
     public BookHelper bookHelper = null;
-    TextView text1 = null;
 
+    private LinearLayout mainLayout;
     private ListView listView;
     private Cursor mCursor;
+
     private static final int STATUS_MAIN = 0;
     private static final int STATUS_FAVOR_LIST = 1;
     private int status = STATUS_MAIN;
@@ -49,6 +53,7 @@ public class BookReaderActivity extends BaseOpenGLActivity {
     }
 
     public void setMainView() {
+        Log.d("[BookReaderActivity]", "setMainView");
         if (mCursor != null) {
             mCursor.deactivate();
             mCursor.close();
@@ -56,6 +61,13 @@ public class BookReaderActivity extends BaseOpenGLActivity {
         setContentView(R.layout.main);
         myGLView = (BaseGLSurfaceView) this.findViewById(R.id.myView1);
         myGLView.createDefaultRenderer();
+
+        mainLayout = (LinearLayout) this.findViewById(R.id.linearLayout1);
+
+        AdView adView = new AdView(this);
+        LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+        mainLayout.addView(adView, params);
         // myGLView = new MainView(this);
         // myGLView.createDefaultRenderer();
         // setContentView(myGLView);
@@ -133,4 +145,9 @@ public class BookReaderActivity extends BaseOpenGLActivity {
 
     }
 
+    @Override
+    public void initView() {
+        AdManager.init(this, "a53789bcadec330e", "e00c0ec70751a15d", 30, false);
+        super.initView();
+    }
 }

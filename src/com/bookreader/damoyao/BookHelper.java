@@ -1,4 +1,4 @@
-package com.bookreader;
+package com.bookreader.damoyao;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 
-import com.bookreader.FavoritesDB.Favor;
-import com.bookreader.config.Settings;
+import com.bookreader.damoyao.FavoritesDB.Favor;
+import com.bookreader.damoyao.config.Settings;
 
 public class BookHelper {
     private Context mContext = null;
@@ -15,6 +15,7 @@ public class BookHelper {
     private static final String OFFSET_TAG = "OFFSET";
     private static final String NEXT_OFFSET_TAG = "NEXTOFFSET";
     private static final String PRE_OFFSET_TAG = "PREOFFSET";
+    private static final String FONTSIZE_TAG = "FONTSIZE";
 
     private static final String DBNAME = "Favorites";
     private static final int DBVERSION = 3;
@@ -30,6 +31,7 @@ public class BookHelper {
         Settings.OFFSET = settings.getInt(OFFSET_TAG, 0);
         Settings.NEXTPAGEOFFSET = settings.getInt(NEXT_OFFSET_TAG, 0);
         Settings.PREPAGEOFFSET = settings.getInt(PRE_OFFSET_TAG, 0);
+        Settings.FONTSIZE = settings.getInt(FONTSIZE_TAG, 0);
 
         initFavorDB();
 
@@ -41,6 +43,7 @@ public class BookHelper {
         editor.putInt(OFFSET_TAG, Settings.OFFSET);
         editor.putInt(NEXT_OFFSET_TAG, Settings.NEXTPAGEOFFSET);
         editor.putInt(PRE_OFFSET_TAG, Settings.PREPAGEOFFSET);
+        editor.putInt(FONTSIZE_TAG, Settings.FONTSIZE);
 
         // Commit the edits!
         editor.commit();

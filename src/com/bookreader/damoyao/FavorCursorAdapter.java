@@ -1,4 +1,4 @@
-package com.bookreader;
+package com.bookreader.damoyao;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.bookreader.config.Settings;
+import com.bookreader.damoyao.config.Settings;
 import com.djx.bookreader.R;
 
 public class FavorCursorAdapter extends SimpleCursorAdapter {

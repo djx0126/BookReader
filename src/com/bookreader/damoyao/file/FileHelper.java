@@ -1,4 +1,4 @@
-package com.bookreader.file;
+package com.bookreader.damoyao.file;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 import android.content.Context;
 
-import com.bookreader.config.Settings;
+import com.bookreader.damoyao.config.Settings;
 
 public class FileHelper {
 

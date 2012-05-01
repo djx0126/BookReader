@@ -1,4 +1,4 @@
-package com.bookreader.views.main;
+package com.bookreader.damoyao.views.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,25 +9,29 @@ import android.graphics.Paint;
 
 import com.android.object.drawable.BaseDrawableObject;
 import com.android.opengl.BaseGLSurfaceView;
-import com.bookreader.config.Settings;
-import com.bookreader.file.FileHelper;
+import com.bookreader.damoyao.config.Settings;
+import com.bookreader.damoyao.file.FileHelper;
 
 public class PageObj extends BaseDrawableObject {
     private static Paint paint = new Paint();
+    private int pageOffset = 0;
 
     public PageObj(BaseGLSurfaceView pView, float pWidth, float pHeight) {
         super(pView, pWidth, pHeight);
 
     }
 
+    public PageObj(BaseGLSurfaceView pView, float pWidth, float pHeight, int pageOffset) {
+        super(pView, pWidth, pHeight);
+        this.pageOffset = pageOffset;
+    }
+
     @Override
     protected void doInitDrawable(GL10 gl) {
         // Log.d("[PageObj]", "doInitDrawable");
-        int offset = Settings.OFFSET;
-        int nextPageOffset = addLines(gl, offset);
+        int nextPageOffset = addLines(gl, pageOffset);
         Settings.NEXTPAGEOFFSET = nextPageOffset;
-
-        toSetPrePage(Settings.OFFSET, Settings.NEXTPAGEOFFSET);
+        toSetPrePage(pageOffset, nextPageOffset);
 
     }
 

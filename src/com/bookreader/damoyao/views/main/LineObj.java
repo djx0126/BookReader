@@ -1,4 +1,4 @@
-package com.bookreader.views.main;
+package com.bookreader.damoyao.views.main;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -8,7 +8,7 @@ import com.android.object.drawable.BaseDrawableObject;
 import com.android.object.drawable.StaticTextObj;
 import com.android.opengl.BaseGLSurfaceView;
 import com.android.opengl.utils.OpenGLUtils;
-import com.bookreader.config.Settings;
+import com.bookreader.damoyao.config.Settings;
 
 public class LineObj extends BaseDrawableObject {
     private static Paint paint = new Paint();
